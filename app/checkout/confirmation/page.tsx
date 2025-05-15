@@ -1,7 +1,8 @@
 "use client"
 
 import { MarketplaceHeader } from "@/components/marketplace/marketplace-header"
-import { CheckoutLayout, CheckoutConfirmation } from "@/components/checkout"
+import { CheckoutLayout } from "@/components/checkout"
+import { CheckoutConfirmation } from "@/components/checkout/lazy-checkout-components"
 
 export default function ConfirmationPage() {
   return (

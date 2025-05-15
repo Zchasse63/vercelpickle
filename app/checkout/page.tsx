@@ -1,15 +1,17 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 import { useGlobalState } from "@/hooks/use-global-state"
 import { MarketplaceHeader } from "@/components/marketplace/marketplace-header"
 import { CheckoutLayout, CheckoutSteps } from "@/components/checkout"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
-  CheckoutShippingStepLazy,
-  CheckoutPaymentStepLazy,
-  CheckoutReviewStepLazy,
-  CheckoutOrderSummaryLazy
+  CheckoutShippingStep,
+  CheckoutPaymentStep,
+  CheckoutReviewStep,
+  CheckoutOrderSummary,
+  preloadCheckoutPaymentStep,
+  preloadCheckoutReviewStep,
+  preloadCheckoutShippingStep
 } from "@/components/checkout/lazy-checkout-components"
 
 export default function CheckoutPage() {
@@ -23,6 +25,17 @@ export default function CheckoutPage() {
   useEffect(() => {
     setCheckoutStep(currentStep)
   }, [currentStep, setCheckoutStep])
+
+  // Preload the next step when the current step is loaded
+  useEffect(() => {
+    if (currentStep === "shipping") {
+      // Preload the payment step when the shipping step is loaded
+      preloadCheckoutPaymentStep()
+    } else if (currentStep === "payment") {
+      // Preload the review step when the payment step is loaded
+      preloadCheckoutReviewStep()
+    }
+  }, [currentStep])
 
   // Handle next step
   const handleNextStep = () => {
@@ -58,14 +71,14 @@ export default function CheckoutPage() {
             />
 
             {currentStep === "shipping" && (
-              <CheckoutShippingStepLazy
+              <CheckoutShippingStep
                 onNext={handleNextStep}
                 testId="checkout-shipping-step"
               />
             )}
 
             {currentStep === "payment" && (
-              <CheckoutPaymentStepLazy
+              <CheckoutPaymentStep
                 onNext={handleNextStep}
                 onBack={handlePreviousStep}
                 testId="checkout-payment-step"
@@ -73,7 +86,7 @@ export default function CheckoutPage() {
             )}
 
             {currentStep === "review" && (
-              <CheckoutReviewStepLazy
+              <CheckoutReviewStep
                 onBack={handlePreviousStep}
                 testId="checkout-review-step"
               />
@@ -81,7 +94,7 @@ export default function CheckoutPage() {
           </div>
 
           <div>
-            <CheckoutOrderSummaryLazy
+            <CheckoutOrderSummary
               testId="checkout-order-summary"
             />
           </div>

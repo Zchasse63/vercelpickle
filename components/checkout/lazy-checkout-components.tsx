@@ -1,11 +1,15 @@
 "use client"
 
-import { Suspense } from "react"
-import { lazyImport } from "@/lib/lazy-import"
+import { lazyImport, preloadComponent } from "@/lib/lazy-import"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// Lazy loaded checkout components
-export const LazyCheckoutShippingStep = lazyImport(
+/**
+ * Lazy-loaded checkout components with proper error handling and loading states
+ * These components will only be loaded when they are actually rendered in the UI
+ */
+
+// Checkout Shipping Step
+export const CheckoutShippingStep = lazyImport(
   () => import("@/components/checkout/checkout-shipping-step"),
   "CheckoutShippingStep",
   {
@@ -24,11 +28,31 @@ export const LazyCheckoutShippingStep = lazyImport(
           <Skeleton className="h-10 w-32" />
         </div>
       </div>
-    )
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load shipping step
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the shipping step"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading CheckoutShippingStep:", error)
+    }
   }
 )
 
-export const LazyCheckoutPaymentStep = lazyImport(
+// Checkout Payment Step
+export const CheckoutPaymentStep = lazyImport(
   () => import("@/components/checkout/checkout-payment-step"),
   "CheckoutPaymentStep",
   {
@@ -48,11 +72,31 @@ export const LazyCheckoutPaymentStep = lazyImport(
           <Skeleton className="h-10 w-32" />
         </div>
       </div>
-    )
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load payment step
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the payment step"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading CheckoutPaymentStep:", error)
+    }
   }
 )
 
-export const LazyCheckoutReviewStep = lazyImport(
+// Checkout Review Step
+export const CheckoutReviewStep = lazyImport(
   () => import("@/components/checkout/checkout-review-step"),
   "CheckoutReviewStep",
   {
@@ -71,11 +115,31 @@ export const LazyCheckoutReviewStep = lazyImport(
           <Skeleton className="h-10 w-32" />
         </div>
       </div>
-    )
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load review step
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the review step"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading CheckoutReviewStep:", error)
+    }
   }
 )
 
-export const LazyCheckoutOrderSummary = lazyImport(
+// Checkout Order Summary
+export const CheckoutOrderSummary = lazyImport(
   () => import("@/components/checkout/checkout-order-summary"),
   "CheckoutOrderSummary",
   {
@@ -108,11 +172,31 @@ export const LazyCheckoutOrderSummary = lazyImport(
           <Skeleton className="h-6 w-20" />
         </div>
       </div>
-    )
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load order summary
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the order summary"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading CheckoutOrderSummary:", error)
+    }
   }
 )
 
-export const LazyCheckoutConfirmation = lazyImport(
+// Checkout Confirmation
+export const CheckoutConfirmation = lazyImport(
   () => import("@/components/checkout/checkout-confirmation"),
   "CheckoutConfirmation",
   {
@@ -129,47 +213,49 @@ export const LazyCheckoutConfirmation = lazyImport(
         </div>
         <Skeleton className="h-10 w-48 mx-auto mt-6" />
       </div>
-    )
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load confirmation
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the confirmation page"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading CheckoutConfirmation:", error)
+    }
   }
 )
 
-// Wrapper components with Suspense
-export function CheckoutShippingStepLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-      <LazyCheckoutShippingStep {...props} />
-    </Suspense>
-  )
+/**
+ * Preload functions for checkout components
+ * These can be called before the components are needed to improve perceived performance
+ */
+export function preloadCheckoutShippingStep() {
+  preloadComponent(() => import("@/components/checkout/checkout-shipping-step"), "CheckoutShippingStep")
 }
 
-export function CheckoutPaymentStepLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-      <LazyCheckoutPaymentStep {...props} />
-    </Suspense>
-  )
+export function preloadCheckoutPaymentStep() {
+  preloadComponent(() => import("@/components/checkout/checkout-payment-step"), "CheckoutPaymentStep")
 }
 
-export function CheckoutReviewStepLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-      <LazyCheckoutReviewStep {...props} />
-    </Suspense>
-  )
+export function preloadCheckoutReviewStep() {
+  preloadComponent(() => import("@/components/checkout/checkout-review-step"), "CheckoutReviewStep")
 }
 
-export function CheckoutOrderSummaryLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
-      <LazyCheckoutOrderSummary {...props} />
-    </Suspense>
-  )
+export function preloadCheckoutOrderSummary() {
+  preloadComponent(() => import("@/components/checkout/checkout-order-summary"), "CheckoutOrderSummary")
 }
 
-export function CheckoutConfirmationLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-      <LazyCheckoutConfirmation {...props} />
-    </Suspense>
-  )
+export function preloadCheckoutConfirmation() {
+  preloadComponent(() => import("@/components/checkout/checkout-confirmation"), "CheckoutConfirmation")
 }
