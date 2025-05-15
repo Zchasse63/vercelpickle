@@ -1,9 +1,5 @@
-import { SpecializedAnalytics } from "@/components/seller/specialized-analytics"
+import ClientPage from "./client-page";
 
 export default function SpecializedAnalyticsPage() {
-  return (
-    <div className="space-y-6">
-      <SpecializedAnalytics />
-    </div>
-  )
+  return <ClientPage />;
 }

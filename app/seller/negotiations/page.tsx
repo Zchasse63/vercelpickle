@@ -1,9 +1,5 @@
-import { NegotiationProcess } from "@/components/seller/negotiation-process"
+import ClientPage from "./client-page";
 
 export default function NegotiationsPage() {
-  return (
-    <div className="space-y-6">
-      <NegotiationProcess />
-    </div>
-  )
+  return <ClientPage />;
 }
