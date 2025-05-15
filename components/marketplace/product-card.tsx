@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { ShoppingCart, Eye, Scale } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { SafeLink } from "@/components/ui/safe-link";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { ProductQuickViewModal } from "@/components/marketplace/product-quick-view-modal";
+import { ProductQuickViewModal, preloadProductQuickViewModal } from "@/components/marketplace/lazy-marketplace-components";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { memoWithComparison, useRenderCount } from "@/lib/performance";
 
@@ -175,6 +175,24 @@ function ProductCardComponent({
   // For performance monitoring in development
   const renderCount = process.env.NODE_ENV === 'development' ? useRenderCount('ProductCard') : 0;
 
+  // Preload the quick view modal when the product card is hovered
+  useEffect(() => {
+    const productCard = document.querySelector(`[data-product-id="${id}"]`);
+
+    if (productCard) {
+      const handleMouseEnter = () => {
+        // Preload the quick view modal when the user hovers over the product card
+        preloadProductQuickViewModal();
+      };
+
+      productCard.addEventListener('mouseenter', handleMouseEnter);
+
+      return () => {
+        productCard.removeEventListener('mouseenter', handleMouseEnter);
+      };
+    }
+  }, [id]);
+
   // State for quick view modal
   const [quickViewOpen, setQuickViewOpen] = useState(false);
 
@@ -215,6 +233,11 @@ function ProductCardComponent({
     setQuickViewOpen(true);
   }, []);
 
+  // Preload the quick view modal when the button is hovered
+  const handleQuickViewHover = useCallback(() => {
+    preloadProductQuickViewModal();
+  }, []);
+
   // Truncate description if it's too long - memoize the computation
   const truncatedDescription = useMemo(() =>
     description.length > 60
@@ -251,6 +274,7 @@ function ProductCardComponent({
                 <TooltipTrigger asChild>
                   <button
                     onClick={handleQuickViewClick}
+                    onMouseEnter={handleQuickViewHover}
                     className="absolute right-2 top-2 z-10 rounded-full bg-white/90 p-1.5 text-gray-700 backdrop-blur-sm transition-all hover:bg-white hover:text-dill-green focus:outline-none focus:ring-2 focus:ring-dill-green opacity-0 group-hover:opacity-100"
                     aria-label="Quick view"
                     data-testid="quick-view-button"
@@ -353,24 +377,26 @@ function ProductCardComponent({
         </CardFooter>
       </Card>
 
-      {/* Quick View Modal */}
-      <ProductQuickViewModal
-        open={quickViewOpen}
-        onOpenChange={setQuickViewOpen}
-        id={id}
-        name={name}
-        description={description}
-        price={price}
-        image={image}
-        category={category}
-        subcategory={subcategory}
-        specifications={specifications}
-        features={features}
-        unit={unit}
-        seller={seller}
-        origin={origin}
-        onAddToCart={handleAddToCart}
-      />
+      {/* Quick View Modal - Only render when open */}
+      {quickViewOpen && (
+        <ProductQuickViewModal
+          open={quickViewOpen}
+          onOpenChange={setQuickViewOpen}
+          id={id}
+          name={name}
+          description={description}
+          price={price}
+          image={image}
+          category={category}
+          subcategory={subcategory}
+          specifications={specifications}
+          features={features}
+          unit={unit}
+          seller={seller}
+          origin={origin}
+          onAddToCart={handleAddToCart}
+        />
+      )}
     </>
   );
 }
