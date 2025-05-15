@@ -1,6 +1,13 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  TextSkeleton,
+  AvatarSkeleton,
+  InputSkeleton,
+  ButtonSkeleton,
+} from "@/components/ui/skeleton-elements";
+import { skeletonArray } from "@/lib/styles/skeleton-styles";
 
 export function DirectMessagingSkeleton() {
   return (
@@ -8,18 +15,18 @@ export function DirectMessagingSkeleton() {
       {/* Sidebar */}
       <div className="col-span-3 border-r">
         <div className="p-4 border-b">
-          <Skeleton className="h-10 w-full rounded-md" />
+          <InputSkeleton size="md" animation="pulse" />
         </div>
         <div className="p-2">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div key={index} className="p-2 mb-2 rounded-md">
+          {skeletonArray(8).map((item) => (
+            <div key={item.id} className="p-2 mb-2 rounded-md">
               <div className="flex items-center space-x-3">
-                <Skeleton className="h-10 w-10 rounded-full" />
+                <AvatarSkeleton size="md" animation="pulse" />
                 <div className="space-y-1 flex-1">
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-3 w-32" />
+                  <TextSkeleton size="sm" width="sm" />
+                  <TextSkeleton size="xs" width="md" />
                 </div>
-                <Skeleton className="h-3 w-8" />
+                <TextSkeleton size="xs" width="xs" />
               </div>
             </div>
           ))}
@@ -31,16 +38,16 @@ export function DirectMessagingSkeleton() {
         {/* Chat header */}
         <div className="p-4 border-b flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Skeleton className="h-10 w-10 rounded-full" />
+            <AvatarSkeleton size="md" animation="pulse" />
             <div>
-              <Skeleton className="h-5 w-32" />
-              <Skeleton className="h-3 w-16 mt-1" />
+              <TextSkeleton size="md" width="md" />
+              <TextSkeleton size="xs" width="xs" className="mt-1" />
             </div>
           </div>
           <div className="flex space-x-2">
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
           </div>
         </div>
 
@@ -48,52 +55,52 @@ export function DirectMessagingSkeleton() {
         <div className="flex-1 p-4 overflow-auto space-y-4">
           {/* Received messages */}
           <div className="flex items-start space-x-2 max-w-[80%]">
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <AvatarSkeleton size="sm" animation="pulse" />
             <div>
               <div className="bg-muted rounded-lg p-3">
-                <Skeleton className="h-4 w-64" />
-                <Skeleton className="h-4 w-48 mt-2" />
+                <TextSkeleton size="sm" width="xl" />
+                <TextSkeleton size="sm" width="lg" className="mt-2" />
               </div>
-              <Skeleton className="h-3 w-16 mt-1" />
+              <TextSkeleton size="xs" width="xs" className="mt-1" />
             </div>
           </div>
 
           {/* Sent messages */}
           <div className="flex items-start space-x-2 max-w-[80%] ml-auto flex-row-reverse">
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <AvatarSkeleton size="sm" animation="pulse" />
             <div>
               <div className="bg-primary rounded-lg p-3">
-                <Skeleton className="h-4 w-56" />
-                <Skeleton className="h-4 w-40 mt-2" />
+                <TextSkeleton size="sm" width="xl" animation="shimmer" />
+                <TextSkeleton size="sm" width="lg" className="mt-2" animation="shimmer" />
               </div>
               <div className="flex justify-end mt-1">
-                <Skeleton className="h-3 w-16" />
+                <TextSkeleton size="xs" width="xs" />
               </div>
             </div>
           </div>
 
           {/* Received messages */}
           <div className="flex items-start space-x-2 max-w-[80%]">
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <AvatarSkeleton size="sm" animation="pulse" />
             <div>
               <div className="bg-muted rounded-lg p-3">
-                <Skeleton className="h-4 w-72" />
+                <TextSkeleton size="sm" width="xxl" />
               </div>
-              <Skeleton className="h-3 w-16 mt-1" />
+              <TextSkeleton size="xs" width="xs" className="mt-1" />
             </div>
           </div>
 
           {/* Sent messages */}
           <div className="flex items-start space-x-2 max-w-[80%] ml-auto flex-row-reverse">
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <AvatarSkeleton size="sm" animation="pulse" />
             <div>
               <div className="bg-primary rounded-lg p-3">
-                <Skeleton className="h-4 w-64" />
-                <Skeleton className="h-4 w-52 mt-2" />
-                <Skeleton className="h-4 w-48 mt-2" />
+                <TextSkeleton size="sm" width="xl" animation="shimmer" />
+                <TextSkeleton size="sm" width="lg" className="mt-2" animation="shimmer" />
+                <TextSkeleton size="sm" width="lg" className="mt-2" animation="shimmer" />
               </div>
               <div className="flex justify-end mt-1">
-                <Skeleton className="h-3 w-16" />
+                <TextSkeleton size="xs" width="xs" />
               </div>
             </div>
           </div>
@@ -102,10 +109,10 @@ export function DirectMessagingSkeleton() {
         {/* Chat input */}
         <div className="p-4 border-t">
           <div className="flex items-center space-x-2">
-            <Skeleton className="h-10 w-10 rounded-full" />
-            <Skeleton className="h-10 flex-1 rounded-md" />
-            <Skeleton className="h-10 w-10 rounded-full" />
-            <Skeleton className="h-10 w-10 rounded-full" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
+            <InputSkeleton size="md" animation="pulse" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
+            <ButtonSkeleton size="icon" shape="circle" animation="pulse" />
           </div>
         </div>
       </div>

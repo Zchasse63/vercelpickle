@@ -2,6 +2,15 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  HeadingSkeleton,
+  TextSkeleton,
+  CardSkeleton,
+  ChartSkeleton,
+  AvatarSkeleton,
+  ButtonSkeleton,
+} from "@/components/ui/skeleton-elements";
+import { skeletonArray, skeletonGrids } from "@/lib/styles/skeleton-styles";
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -15,98 +24,90 @@ import {
 export function SpecializedAnalyticsSkeleton() {
   return (
     <div className="space-y-6" data-testid="specialized-analytics-skeleton">
+      {/* Page header */}
       <div>
-        <Skeleton className="h-8 w-64 mb-2" />
-        <Skeleton className="h-4 w-96" />
+        <HeadingSkeleton level={1} withSubheading />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <Card key={index}>
-            <CardHeader className="pb-2">
-              <CardTitle>
-                <Skeleton className="h-5 w-32" />
-              </CardTitle>
-              <CardDescription>
-                <Skeleton className="h-4 w-24" />
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-8 w-24" />
-            </CardContent>
-          </Card>
+      {/* Stats cards */}
+      <div className={skeletonGrids.cards3}>
+        {skeletonArray(3).map((item) => (
+          <CardSkeleton
+            key={item.id}
+            headerSize="md"
+            contentLines={1}
+            animation="shimmer"
+          />
         ))}
       </div>
 
+      {/* Tabs section */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">
-            <Skeleton className="h-4 w-20" />
-          </TabsTrigger>
-          <TabsTrigger value="products">
-            <Skeleton className="h-4 w-20" />
-          </TabsTrigger>
-          <TabsTrigger value="customers">
-            <Skeleton className="h-4 w-20" />
-          </TabsTrigger>
-          <TabsTrigger value="regions">
-            <Skeleton className="h-4 w-20" />
-          </TabsTrigger>
+          {["overview", "products", "customers", "regions"].map((tab) => (
+            <TabsTrigger key={tab} value={tab}>
+              <TextSkeleton size="sm" width="xs" />
+            </TabsTrigger>
+          ))}
         </TabsList>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Charts grid */}
+        <div className={skeletonGrids.cards2}>
           <Card>
             <CardHeader>
               <CardTitle>
-                <Skeleton className="h-5 w-48" />
+                <TextSkeleton size="lg" width="lg" />
               </CardTitle>
               <CardDescription>
-                <Skeleton className="h-4 w-64" />
+                <TextSkeleton size="sm" width="xl" />
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-[200px] w-full" />
+              <ChartSkeleton height="md" animation="wave" />
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>
-                <Skeleton className="h-5 w-48" />
+                <TextSkeleton size="lg" width="lg" />
               </CardTitle>
               <CardDescription>
-                <Skeleton className="h-4 w-64" />
+                <TextSkeleton size="sm" width="xl" />
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-[200px] w-full" />
+              <ChartSkeleton height="md" animation="wave" />
             </CardContent>
           </Card>
         </div>
 
+        {/* Table card */}
         <Card>
           <CardHeader>
             <CardTitle>
-              <Skeleton className="h-5 w-48" />
+              <TextSkeleton size="lg" width="lg" />
             </CardTitle>
             <CardDescription>
-              <Skeleton className="h-4 w-64" />
+              <TextSkeleton size="sm" width="xl" />
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
+              {/* Table header */}
               <div className="flex justify-between">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-32" />
+                {skeletonArray(4).map((item) => (
+                  <TextSkeleton key={item.id} size="sm" width="md" />
+                ))}
               </div>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <Skeleton className="h-4 w-48" />
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
+
+              {/* Table rows */}
+              {skeletonArray(5).map((item) => (
+                <div key={item.id} className="flex justify-between items-center">
+                  <TextSkeleton size="sm" width="lg" />
+                  <TextSkeleton size="sm" width="xs" />
+                  <TextSkeleton size="sm" width="xs" />
+                  <TextSkeleton size="sm" width="xs" />
                 </div>
               ))}
             </div>
@@ -114,46 +115,49 @@ export function SpecializedAnalyticsSkeleton() {
         </Card>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Bottom cards */}
+      <div className={skeletonGrids.cards2}>
+        {/* Users card */}
         <Card>
           <CardHeader>
             <CardTitle>
-              <Skeleton className="h-5 w-48" />
+              <TextSkeleton size="lg" width="lg" />
             </CardTitle>
             <CardDescription>
-              <Skeleton className="h-4 w-64" />
+              <TextSkeleton size="sm" width="xl" />
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="flex justify-between items-center">
+              {skeletonArray(4).map((item) => (
+                <div key={item.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                    <Skeleton className="h-4 w-32" />
+                    <AvatarSkeleton size="sm" animation="pulse" />
+                    <TextSkeleton size="sm" width="md" />
                   </div>
-                  <Skeleton className="h-4 w-16" />
+                  <TextSkeleton size="sm" width="xs" />
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
+        {/* Stats card */}
         <Card>
           <CardHeader>
             <CardTitle>
-              <Skeleton className="h-5 w-48" />
+              <TextSkeleton size="lg" width="lg" />
             </CardTitle>
             <CardDescription>
-              <Skeleton className="h-4 w-64" />
+              <TextSkeleton size="sm" width="xl" />
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-4 w-16" />
+              {skeletonArray(4).map((item) => (
+                <div key={item.id} className="flex justify-between items-center">
+                  <TextSkeleton size="sm" width="md" />
+                  <TextSkeleton size="sm" width="xs" />
                 </div>
               ))}
             </div>
