@@ -1,0 +1,46 @@
+{
+  "paymentMethods": [
+    {
+      "_id": "PM-001",
+      "userId": "buyer-123",
+      "type": "credit_card",
+      "isDefault": true,
+      "cardBrand": "visa",
+      "last4": "4242",
+      "expiryMonth": 12,
+      "expiryYear": 2025,
+      "cardholderName": "John Doe",
+      "billingAddress": {
+        "name": "John Doe",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "createdAt": 1620000000000,
+      "updatedAt": 1630000000000
+    },
+    {
+      "_id": "PM-002",
+      "userId": "buyer-123",
+      "type": "credit_card",
+      "isDefault": false,
+      "cardBrand": "mastercard",
+      "last4": "5555",
+      "expiryMonth": 10,
+      "expiryYear": 2024,
+      "cardholderName": "John Doe",
+      "billingAddress": {
+        "name": "John Doe",
+        "street": "456 Business Blvd",
+        "city": "Oakland",
+        "state": "CA",
+        "zip": "94612",
+        "country": "USA"
+      },
+      "createdAt": 1625000000000,
+      "updatedAt": 1630000000000
+    }
+  ]
+}

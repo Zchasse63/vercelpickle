@@ -1,0 +1,46 @@
+{
+  "addresses": [
+    {
+      "_id": "ADDR-001",
+      "name": "Restaurant Address",
+      "street": "123 Main St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA",
+      "isDefault": true,
+      "phone": "555-123-4567",
+      "notes": "Delivery entrance on side of building",
+      "createdAt": 1620000000000,
+      "updatedAt": 1630000000000
+    },
+    {
+      "_id": "ADDR-002",
+      "name": "Warehouse Address",
+      "street": "456 Storage Blvd",
+      "city": "Oakland",
+      "state": "CA",
+      "zip": "94612",
+      "country": "USA",
+      "isDefault": false,
+      "phone": "555-987-6543",
+      "notes": "Open 9am-5pm weekdays only",
+      "createdAt": 1625000000000,
+      "updatedAt": 1635000000000
+    },
+    {
+      "_id": "ADDR-003",
+      "name": "Secondary Location",
+      "street": "789 Market St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94103",
+      "country": "USA",
+      "isDefault": false,
+      "phone": "555-456-7890",
+      "notes": "",
+      "createdAt": 1640000000000,
+      "updatedAt": 1640000000000
+    }
+  ]
+}

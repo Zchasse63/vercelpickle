@@ -1,0 +1,117 @@
+{
+  "results": {
+    "query": "organic",
+    "totalResults": 5,
+    "page": 1,
+    "totalPages": 1,
+    "products": [
+      {
+        "_id": "PROD-001",
+        "name": "Organic Carrots",
+        "description": "Fresh organic carrots from local farms",
+        "price": 9.99,
+        "unit": "kg",
+        "category": "Fresh Produce",
+        "subcategory": "Vegetables",
+        "images": ["/placeholder.svg"],
+        "seller": {
+          "_id": "seller-123",
+          "name": "Farm Fresh Foods"
+        },
+        "stock": 100,
+        "rating": 4.5,
+        "reviewCount": 28,
+        "tags": ["organic", "vegetables", "local"],
+        "createdAt": 1620000000000,
+        "updatedAt": 1630000000000
+      },
+      {
+        "_id": "PROD-003",
+        "name": "Organic Tomatoes",
+        "description": "Vine-ripened organic tomatoes",
+        "price": 7.99,
+        "unit": "kg",
+        "category": "Fresh Produce",
+        "subcategory": "Vegetables",
+        "images": ["/placeholder.svg"],
+        "seller": {
+          "_id": "seller-123",
+          "name": "Farm Fresh Foods"
+        },
+        "stock": 75,
+        "rating": 4.2,
+        "reviewCount": 15,
+        "tags": ["organic", "vegetables", "local"],
+        "createdAt": 1620000000000,
+        "updatedAt": 1630000000000
+      },
+      {
+        "_id": "PROD-005",
+        "name": "Organic Spinach",
+        "description": "Fresh organic spinach leaves",
+        "price": 5.99,
+        "unit": "bunch",
+        "category": "Fresh Produce",
+        "subcategory": "Leafy Greens",
+        "images": ["/placeholder.svg"],
+        "seller": {
+          "_id": "seller-123",
+          "name": "Farm Fresh Foods"
+        },
+        "stock": 50,
+        "rating": 4.7,
+        "reviewCount": 12,
+        "tags": ["organic", "vegetables", "leafy greens"],
+        "createdAt": 1620000000000,
+        "updatedAt": 1630000000000
+      },
+      {
+        "_id": "PROD-008",
+        "name": "Organic Apples",
+        "description": "Fresh organic apples from local orchards",
+        "price": 6.99,
+        "unit": "kg",
+        "category": "Fresh Produce",
+        "subcategory": "Fruits",
+        "images": ["/placeholder.svg"],
+        "seller": {
+          "_id": "seller-124",
+          "name": "Orchard Fresh"
+        },
+        "stock": 120,
+        "rating": 4.8,
+        "reviewCount": 32,
+        "tags": ["organic", "fruits", "local"],
+        "createdAt": 1620000000000,
+        "updatedAt": 1630000000000
+      },
+      {
+        "_id": "PROD-012",
+        "name": "Organic Milk",
+        "description": "Fresh organic whole milk",
+        "price": 4.99,
+        "unit": "liter",
+        "category": "Dairy",
+        "subcategory": "Milk",
+        "images": ["/placeholder.svg"],
+        "seller": {
+          "_id": "seller-125",
+          "name": "Green Valley Dairy"
+        },
+        "stock": 80,
+        "rating": 4.6,
+        "reviewCount": 22,
+        "tags": ["organic", "dairy", "milk"],
+        "createdAt": 1620000000000,
+        "updatedAt": 1630000000000
+      }
+    ],
+    "suggestions": [
+      "organic vegetables",
+      "organic fruits",
+      "organic dairy",
+      "organic meat",
+      "organic produce"
+    ]
+  }
+}

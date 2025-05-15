@@ -1,0 +1,113 @@
+[
+  {
+    "id": "PROD-001",
+    "name": "Organic Apples",
+    "description": "Fresh organic apples from local farms",
+    "price": 24.99,
+    "unit": "case",
+    "category": "Fresh Produce",
+    "inventory": 100,
+    "sellerId": "seller_1",
+    "images": ["https://images.pexels.com/photos/1510392/pexels-photo-1510392.jpeg"],
+    "specifications": {
+      "packaging": "10 lb case",
+      "organic": true,
+      "dietary": {
+        "organic": true,
+        "glutenFree": true,
+        "vegan": true
+      }
+    },
+    "seller": {
+      "id": "seller_1",
+      "name": "Farm Fresh Foods"
+    }
+  },
+  {
+    "id": "PROD-002",
+    "name": "Artisan Sourdough",
+    "description": "Handcrafted artisan sourdough bread",
+    "price": 5.99,
+    "unit": "loaf",
+    "category": "Bakery",
+    "inventory": 50,
+    "sellerId": "seller_2",
+    "images": ["https://images.pexels.com/photos/1387075/pexels-photo-1387075.jpeg"],
+    "specifications": {
+      "packaging": "Paper bag",
+      "weight": "1 lb",
+      "dietary": {
+        "vegan": true
+      }
+    },
+    "seller": {
+      "id": "seller_2",
+      "name": "Artisan Bakery"
+    }
+  },
+  {
+    "id": "PROD-003",
+    "name": "Organic Carrots",
+    "description": "Fresh organic carrots from local farms",
+    "price": 12.99,
+    "unit": "kg",
+    "category": "Fresh Produce",
+    "inventory": 75,
+    "sellerId": "seller_1",
+    "images": ["https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg"],
+    "specifications": {
+      "packaging": "5 lb bag",
+      "organic": true,
+      "dietary": {
+        "organic": true,
+        "glutenFree": true,
+        "vegan": true
+      }
+    },
+    "seller": {
+      "id": "seller_1",
+      "name": "Farm Fresh Foods"
+    }
+  },
+  {
+    "id": "PROD-004",
+    "name": "Whole Grain Flour",
+    "description": "Stone-ground whole grain flour",
+    "price": 8.99,
+    "unit": "bag",
+    "category": "Baking Supplies",
+    "inventory": 120,
+    "sellerId": "seller_2",
+    "images": ["https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg"],
+    "specifications": {
+      "packaging": "2 lb bag",
+      "weight": "2 lb",
+      "dietary": {
+        "vegan": true
+      }
+    },
+    "seller": {
+      "id": "seller_2",
+      "name": "Artisan Bakery"
+    }
+  },
+  {
+    "id": "PROD-005",
+    "name": "Grass-Fed Ground Beef",
+    "description": "Premium grass-fed ground beef from local farms",
+    "price": 9.99,
+    "unit": "lb",
+    "category": "Meat & Seafood",
+    "inventory": 60,
+    "sellerId": "seller_1",
+    "images": ["https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg"],
+    "specifications": {
+      "packaging": "Vacuum sealed",
+      "weight": "1 lb"
+    },
+    "seller": {
+      "id": "seller_1",
+      "name": "Farm Fresh Foods"
+    }
+  }
+]

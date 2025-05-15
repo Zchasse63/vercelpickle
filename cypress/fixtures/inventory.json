@@ -1,0 +1,135 @@
+[
+  {
+    "productId": "prod-001",
+    "name": "Organic Carrots (5lb)",
+    "sku": "ORG-CAR-5LB",
+    "inventory": {
+      "available": 120,
+      "reserved": 15,
+      "backorder": 0,
+      "minimum": 20,
+      "maximum": 200
+    },
+    "location": {
+      "warehouse": "Main",
+      "aisle": "A",
+      "bin": "12"
+    },
+    "lastUpdated": "2023-05-15T10:30:00.000Z",
+    "status": "In Stock"
+  },
+  {
+    "productId": "prod-002",
+    "name": "Fresh Milk (1 Gallon)",
+    "sku": "MILK-GAL-1",
+    "inventory": {
+      "available": 85,
+      "reserved": 10,
+      "backorder": 0,
+      "minimum": 15,
+      "maximum": 100
+    },
+    "location": {
+      "warehouse": "Cold Storage",
+      "aisle": "B",
+      "bin": "05"
+    },
+    "lastUpdated": "2023-05-15T09:45:00.000Z",
+    "status": "In Stock"
+  },
+  {
+    "productId": "prod-003",
+    "name": "Artisan Bread Loaf",
+    "sku": "BRD-ART-LF",
+    "inventory": {
+      "available": 42,
+      "reserved": 8,
+      "backorder": 0,
+      "minimum": 10,
+      "maximum": 60
+    },
+    "location": {
+      "warehouse": "Main",
+      "aisle": "C",
+      "bin": "03"
+    },
+    "lastUpdated": "2023-05-15T08:15:00.000Z",
+    "status": "In Stock"
+  },
+  {
+    "productId": "prod-004",
+    "name": "Organic Spinach (1lb)",
+    "sku": "ORG-SPN-1LB",
+    "inventory": {
+      "available": 8,
+      "reserved": 2,
+      "backorder": 0,
+      "minimum": 10,
+      "maximum": 50
+    },
+    "location": {
+      "warehouse": "Cold Storage",
+      "aisle": "A",
+      "bin": "08"
+    },
+    "lastUpdated": "2023-05-15T11:20:00.000Z",
+    "status": "Low Stock"
+  },
+  {
+    "productId": "prod-005",
+    "name": "Russet Potatoes (10lb)",
+    "sku": "POT-RUS-10LB",
+    "inventory": {
+      "available": 65,
+      "reserved": 5,
+      "backorder": 0,
+      "minimum": 15,
+      "maximum": 80
+    },
+    "location": {
+      "warehouse": "Main",
+      "aisle": "B",
+      "bin": "14"
+    },
+    "lastUpdated": "2023-05-15T10:00:00.000Z",
+    "status": "In Stock"
+  },
+  {
+    "productId": "prod-006",
+    "name": "Assorted Dairy Pack",
+    "sku": "DRY-AST-PK",
+    "inventory": {
+      "available": 0,
+      "reserved": 0,
+      "backorder": 10,
+      "minimum": 5,
+      "maximum": 30
+    },
+    "location": {
+      "warehouse": "Cold Storage",
+      "aisle": "C",
+      "bin": "02"
+    },
+    "lastUpdated": "2023-05-15T09:30:00.000Z",
+    "status": "Out of Stock"
+  },
+  {
+    "productId": "prod-007",
+    "name": "Premium Coffee Beans (1lb)",
+    "sku": "COF-PRM-1LB",
+    "inventory": {
+      "available": 28,
+      "reserved": 3,
+      "backorder": 0,
+      "minimum": 10,
+      "maximum": 50
+    },
+    "location": {
+      "warehouse": "Main",
+      "aisle": "D",
+      "bin": "07"
+    },
+    "lastUpdated": "2023-05-15T11:45:00.000Z",
+    "status": "In Stock"
+  }
+]

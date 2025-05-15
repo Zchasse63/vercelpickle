@@ -1,0 +1,51 @@
+{
+  "_id": "USER-SELLER-001",
+  "name": "Green Farms",
+  "businessName": "Green Farms Produce",
+  "email": "contact@greenfarms.example.com",
+  "role": "seller",
+  "phone": "555-987-6543",
+  "status": "active",
+  "createdAt": 1610000000000,
+  "updatedAt": 1635000000000,
+  "businessDetails": {
+    "type": "Farm & Producer",
+    "description": "Organic farm specializing in fresh vegetables and fruits",
+    "foundedYear": 2010,
+    "employeeCount": 25,
+    "website": "https://greenfarms.example.com",
+    "socialMedia": {
+      "instagram": "@greenfarms",
+      "facebook": "GreenFarmsProduce"
+    }
+  },
+  "address": {
+    "street": "789 Farm Road",
+    "city": "Fresno",
+    "state": "CA",
+    "zip": "93706",
+    "country": "USA"
+  },
+  "bankInfo": {
+    "accountName": "Green Farms LLC",
+    "accountType": "Business",
+    "routingNumber": "XXXX9876",
+    "accountNumber": "XXXX5432"
+  },
+  "taxInfo": {
+    "taxId": "XX-XXXXXXX",
+    "taxClassification": "LLC"
+  },
+  "certifications": [
+    "USDA Organic",
+    "Non-GMO Project Verified",
+    "Certified Humane"
+  ],
+  "rating": 4.8,
+  "reviewCount": 156,
+  "productCategories": [
+    "Vegetables",
+    "Fruits",
+    "Herbs"
+  ]
+}

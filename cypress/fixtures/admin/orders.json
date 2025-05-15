@@ -1,0 +1,199 @@
+{
+  "orders": [
+    {
+      "_id": "ORD-12345",
+      "orderNumber": "ORD-12345",
+      "buyerId": "USER-BUYER-001",
+      "buyerName": "John Buyer",
+      "buyerEmail": "john.buyer@example.com",
+      "status": "pending",
+      "paymentStatus": "paid",
+      "shippingStatus": "processing",
+      "createdAt": 1650000000000,
+      "updatedAt": 1650000100000,
+      "total": 156.78,
+      "subtotal": 142.53,
+      "tax": 14.25,
+      "shipping": 0,
+      "items": [
+        {
+          "productId": "PROD-001",
+          "productName": "Organic Carrots (5lb)",
+          "quantity": 5,
+          "price": 4.99,
+          "total": 24.95,
+          "sellerId": "SELLER-001",
+          "sellerName": "Green Farms"
+        },
+        {
+          "productId": "PROD-002",
+          "productName": "Artisan Sourdough Bread",
+          "quantity": 10,
+          "price": 6.99,
+          "total": 69.90,
+          "sellerId": "SELLER-002",
+          "sellerName": "Artisan Bakery"
+        },
+        {
+          "productId": "PROD-003",
+          "productName": "Grass-Fed Ground Beef",
+          "quantity": 5,
+          "price": 8.99,
+          "total": 44.95,
+          "sellerId": "SELLER-003",
+          "sellerName": "Premium Meats"
+        }
+      ],
+      "shippingAddress": {
+        "name": "Restaurant Address",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "paymentMethod": {
+        "type": "credit_card",
+        "brand": "visa",
+        "last4": "4242"
+      },
+      "notes": "Please deliver before 10am"
+    },
+    {
+      "_id": "ORD-12344",
+      "orderNumber": "ORD-12344",
+      "buyerId": "USER-BUYER-002",
+      "buyerName": "Sarah Customer",
+      "buyerEmail": "sarah.customer@example.com",
+      "status": "completed",
+      "paymentStatus": "paid",
+      "shippingStatus": "delivered",
+      "createdAt": 1649700000000,
+      "updatedAt": 1649800000000,
+      "total": 89.99,
+      "subtotal": 81.81,
+      "tax": 8.18,
+      "shipping": 0,
+      "items": [
+        {
+          "productId": "PROD-004",
+          "productName": "Organic Avocados",
+          "quantity": 3,
+          "price": 7.99,
+          "total": 23.97,
+          "sellerId": "SELLER-001",
+          "sellerName": "Green Farms"
+        },
+        {
+          "productId": "PROD-005",
+          "productName": "Artisan Goat Cheese",
+          "quantity": 5,
+          "price": 9.99,
+          "total": 49.95,
+          "sellerId": "SELLER-004",
+          "sellerName": "Dairy Delights"
+        }
+      ],
+      "shippingAddress": {
+        "name": "Cafe XYZ",
+        "street": "456 Oak St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94110",
+        "country": "USA"
+      },
+      "paymentMethod": {
+        "type": "credit_card",
+        "brand": "mastercard",
+        "last4": "5678"
+      },
+      "notes": ""
+    },
+    {
+      "_id": "ORD-12343",
+      "orderNumber": "ORD-12343",
+      "buyerId": "USER-BUYER-001",
+      "buyerName": "John Buyer",
+      "buyerEmail": "john.buyer@example.com",
+      "status": "processing",
+      "paymentStatus": "paid",
+      "shippingStatus": "shipped",
+      "createdAt": 1649600000000,
+      "updatedAt": 1649650000000,
+      "total": 123.45,
+      "subtotal": 112.23,
+      "tax": 11.22,
+      "shipping": 0,
+      "items": [
+        {
+          "productId": "PROD-002",
+          "productName": "Artisan Sourdough Bread",
+          "quantity": 8,
+          "price": 6.99,
+          "total": 55.92,
+          "sellerId": "SELLER-002",
+          "sellerName": "Artisan Bakery"
+        },
+        {
+          "productId": "PROD-003",
+          "productName": "Grass-Fed Ground Beef",
+          "quantity": 6,
+          "price": 8.99,
+          "total": 53.94,
+          "sellerId": "SELLER-003",
+          "sellerName": "Premium Meats"
+        }
+      ],
+      "shippingAddress": {
+        "name": "Restaurant Address",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "paymentMethod": {
+        "type": "credit_card",
+        "brand": "visa",
+        "last4": "4242"
+      },
+      "notes": ""
+    }
+  ],
+  "pagination": {
+    "total": 1245,
+    "page": 1,
+    "pageSize": 10,
+    "totalPages": 125
+  },
+  "filters": {
+    "statuses": [
+      "pending",
+      "processing",
+      "completed",
+      "cancelled",
+      "refunded"
+    ],
+    "paymentStatuses": [
+      "pending",
+      "paid",
+      "failed",
+      "refunded"
+    ],
+    "shippingStatuses": [
+      "processing",
+      "shipped",
+      "delivered",
+      "returned"
+    ],
+    "dateRanges": [
+      "Today",
+      "Yesterday",
+      "Last 7 days",
+      "Last 30 days",
+      "This month",
+      "Last month",
+      "Custom range"
+    ]
+  }
+}

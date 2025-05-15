@@ -1,0 +1,29 @@
+{
+  "profile": {
+    "_id": "PROF-001",
+    "userId": "buyer-123",
+    "name": "John Doe",
+    "email": "buyer@example.com",
+    "phone": "555-123-4567",
+    "company": "Test Company",
+    "position": "Purchasing Manager",
+    "bio": "Experienced purchasing manager for a mid-sized restaurant chain.",
+    "preferences": {
+      "notifications": {
+        "email": true,
+        "sms": false,
+        "app": true
+      },
+      "orderUpdates": true,
+      "promotions": false,
+      "newsletter": true
+    },
+    "settings": {
+      "language": "en",
+      "currency": "USD",
+      "timezone": "America/New_York"
+    },
+    "createdAt": 1620000000000,
+    "updatedAt": 1630000000000
+  }
+}

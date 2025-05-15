@@ -1,0 +1,190 @@
+[
+  {
+    "name": "Organic Heirloom Tomatoes",
+    "description": "Juicy, flavorful organic heirloom tomatoes grown using sustainable farming practices.",
+    "price": 4.99,
+    "category": "Fruits & Vegetables",
+    "subcategory": "Vegetables",
+    "unit": "lb",
+    "inventory": 150,
+    "images": ["/images/products/tomatoes.jpg"],
+    "features": [
+      "Grown without synthetic pesticides or fertilizers",
+      "Harvested at peak ripeness for maximum flavor",
+      "Multiple varieties with unique colors and flavors",
+      "Perfect for salads, sandwiches, or cooking"
+    ],
+    "specifications": {
+      "dietary": {
+        "organic": true,
+        "vegan": true,
+        "vegetarian": true,
+        "nonGMO": true
+      },
+      "environmental": {
+        "ecofriendly": true,
+        "compostable": true
+      },
+      "quality": {
+        "grade": "Premium",
+        "shelfLife": {
+          "value": 7,
+          "unit": "days"
+        }
+      },
+      "storage": "Store at room temperature away from direct sunlight. Refrigerate after ripening."
+    },
+    "origin": {
+      "country": "USA",
+      "region": "California",
+      "farm": "Sunshine Organic Farm"
+    },
+    "certifications": ["USDA Organic", "Non-GMO Project Verified"]
+  },
+  {
+    "name": "Artisanal Sourdough Bread",
+    "description": "Handcrafted sourdough bread made with organic flour and a 100-year-old starter.",
+    "price": 6.99,
+    "category": "Bakery",
+    "subcategory": "Bread",
+    "unit": "loaf",
+    "inventory": 45,
+    "images": ["/images/products/sourdough.jpg"],
+    "features": [
+      "Naturally leavened with wild yeast",
+      "No commercial yeast or additives",
+      "Crispy crust and tender, tangy interior",
+      "48-hour fermentation process"
+    ],
+    "specifications": {
+      "dietary": {
+        "vegan": true,
+        "vegetarian": true
+      },
+      "size": "1 lb loaf",
+      "quality": {
+        "shelfLife": {
+          "value": 5,
+          "unit": "days"
+        }
+      },
+      "storage": "Store in a paper bag at room temperature. Freeze for longer storage."
+    },
+    "origin": {
+      "country": "USA",
+      "region": "New York",
+      "producer": "Artisan Bakehouse"
+    },
+    "certifications": ["Artisan Bakers Guild"]
+  },
+  {
+    "name": "Grass-Fed Ground Beef",
+    "description": "Premium ground beef from grass-fed, pasture-raised cattle. No hormones or antibiotics.",
+    "price": 8.99,
+    "category": "Meat & Seafood",
+    "subcategory": "Beef",
+    "unit": "lb",
+    "inventory": 75,
+    "images": ["/images/products/ground-beef.jpg"],
+    "features": [
+      "100% grass-fed and finished",
+      "Higher in omega-3 fatty acids than grain-fed beef",
+      "Humanely raised with unrestricted access to pasture",
+      "No antibiotics or growth hormones"
+    ],
+    "specifications": {
+      "dietary": {
+        "glutenFree": true,
+        "lactoseFree": true
+      },
+      "quality": {
+        "grade": "Premium",
+        "shelfLife": {
+          "value": 5,
+          "unit": "days"
+        }
+      },
+      "storage": "Keep refrigerated or freeze for up to 6 months."
+    },
+    "origin": {
+      "country": "USA",
+      "region": "Montana",
+      "farm": "Green Pastures Ranch"
+    },
+    "certifications": ["Certified Humane", "American Grassfed"]
+  },
+  {
+    "name": "Organic Cold-Pressed Olive Oil",
+    "description": "Extra virgin olive oil cold-pressed from organically grown olives.",
+    "price": 14.99,
+    "category": "Pantry",
+    "subcategory": "Oils & Vinegars",
+    "unit": "bottle",
+    "inventory": 60,
+    "images": ["/images/products/olive-oil.jpg"],
+    "features": [
+      "First cold-pressed for maximum flavor and nutrients",
+      "Low acidity (0.3%)",
+      "Rich in polyphenols and antioxidants",
+      "Smooth, fruity flavor with a peppery finish"
+    ],
+    "specifications": {
+      "dietary": {
+        "organic": true,
+        "vegan": true,
+        "vegetarian": true,
+        "glutenFree": true,
+        "lactoseFree": true,
+        "nonGMO": true
+      },
+      "environmental": {
+        "ecofriendly": true
+      },
+      "size": "500ml",
+      "packaging": "Dark glass bottle",
+      "quality": {
+        "grade": "Extra Virgin",
+        "shelfLife": {
+          "value": 24,
+          "unit": "months"
+        }
+      },
+      "storage": "Store in a cool, dark place away from heat and light."
+    },
+    "origin": {
+      "country": "Italy",
+      "region": "Tuscany"
+    },
+    "certifications": ["USDA Organic", "Protected Designation of Origin (PDO)"]
+  },
+  {
+    "name": "Biodegradable Food Storage Containers",
+    "description": "Eco-friendly food storage containers made from plant-based materials.",
+    "price": 12.99,
+    "category": "Kitchen Supplies",
+    "subcategory": "Food Storage",
+    "unit": "set",
+    "inventory": 40,
+    "images": ["/images/products/containers.jpg"],
+    "features": [
+      "Made from plant-based materials",
+      "Fully biodegradable and compostable",
+      "Microwave and dishwasher safe",
+      "BPA-free and food-safe",
+      "Set of 3 different sizes"
+    ],
+    "specifications": {
+      "environmental": {
+        "ecofriendly": true,
+        "biodegradable": true,
+        "compostable": true,
+        "recyclable": true
+      },
+      "material": "Plant-based bioplastic",
+      "size": "Set of 3 (small, medium, large)",
+      "microwavable": true,
+      "dishwasherSafe": true
+    },
+    "certifications": ["Biodegradable Products Institute", "USDA Biobased"]
+  }
+]

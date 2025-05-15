@@ -1,0 +1,60 @@
+{
+  "paymentMethods": [
+    {
+      "_id": "PM-001",
+      "type": "credit_card",
+      "brand": "visa",
+      "last4": "4242",
+      "expMonth": 12,
+      "expYear": 2025,
+      "isDefault": true,
+      "billingAddress": {
+        "name": "John Buyer",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "createdAt": 1620000000000,
+      "updatedAt": 1630000000000
+    },
+    {
+      "_id": "PM-002",
+      "type": "credit_card",
+      "brand": "mastercard",
+      "last4": "5678",
+      "expMonth": 10,
+      "expYear": 2024,
+      "isDefault": false,
+      "billingAddress": {
+        "name": "John Buyer",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "createdAt": 1625000000000,
+      "updatedAt": 1635000000000
+    },
+    {
+      "_id": "PM-003",
+      "type": "bank_account",
+      "bankName": "Chase",
+      "accountType": "checking",
+      "last4": "9876",
+      "isDefault": false,
+      "billingAddress": {
+        "name": "John Buyer",
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "createdAt": 1640000000000,
+      "updatedAt": 1640000000000
+    }
+  ]
+}

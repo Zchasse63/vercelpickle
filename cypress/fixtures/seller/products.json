@@ -1,0 +1,201 @@
+{
+  "products": [
+    {
+      "_id": "PROD-001",
+      "name": "Organic Carrots (5lb)",
+      "description": "Fresh organic carrots from local farms. Our carrots are grown using sustainable farming practices and harvested at peak freshness.",
+      "price": 4.99,
+      "unit": "bag",
+      "category": "Vegetables",
+      "subcategory": "Root Vegetables",
+      "inventory": 120,
+      "minOrderQuantity": 5,
+      "maxOrderQuantity": 100,
+      "images": [
+        "/bunch-of-carrots.png",
+        "/carrots-in-field.png",
+        "/sliced-carrots.png",
+        "/carrot-harvest.png"
+      ],
+      "status": "active",
+      "createdAt": 1620000000000,
+      "updatedAt": 1630000000000,
+      "featured": true,
+      "rating": 4.8,
+      "reviewCount": 156,
+      "salesCount": 789,
+      "specifications": {
+        "dietary": {
+          "organic": true,
+          "nonGMO": true
+        },
+        "weight": "5 lbs"
+      },
+      "origin": {
+        "country": "USA",
+        "region": "California"
+      },
+      "certifications": ["USDA Organic", "Non-GMO Project Verified"]
+    },
+    {
+      "_id": "PROD-004",
+      "name": "Organic Avocados",
+      "description": "Perfectly ripe organic avocados, ready to eat or use in your favorite recipes.",
+      "price": 7.99,
+      "unit": "bag",
+      "category": "Fruits",
+      "subcategory": "Fresh Fruits",
+      "inventory": 60,
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 30,
+      "images": [
+        "/avocados.png",
+        "/sliced-avocado.png"
+      ],
+      "status": "active",
+      "createdAt": 1623000000000,
+      "updatedAt": 1633000000000,
+      "featured": true,
+      "rating": 4.9,
+      "reviewCount": 87,
+      "salesCount": 345,
+      "specifications": {
+        "dietary": {
+          "organic": true,
+          "vegan": true,
+          "keto": true
+        },
+        "weight": "4 count"
+      },
+      "origin": {
+        "country": "Mexico",
+        "region": "Michoacán"
+      },
+      "certifications": ["USDA Organic", "Fair Trade Certified"]
+    },
+    {
+      "_id": "PROD-007",
+      "name": "Organic Kale",
+      "description": "Fresh organic kale, perfect for salads, smoothies, or cooking.",
+      "price": 3.99,
+      "unit": "bunch",
+      "category": "Vegetables",
+      "subcategory": "Leafy Greens",
+      "inventory": 85,
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 50,
+      "images": [
+        "/kale-bunch.png",
+        "/kale-field.png"
+      ],
+      "status": "active",
+      "createdAt": 1626000000000,
+      "updatedAt": 1636000000000,
+      "featured": false,
+      "rating": 4.7,
+      "reviewCount": 65,
+      "salesCount": 234,
+      "specifications": {
+        "dietary": {
+          "organic": true,
+          "vegan": true
+        },
+        "weight": "1 bunch"
+      },
+      "origin": {
+        "country": "USA",
+        "region": "California"
+      },
+      "certifications": ["USDA Organic"]
+    },
+    {
+      "_id": "PROD-008",
+      "name": "Organic Tomatoes",
+      "description": "Vine-ripened organic tomatoes, bursting with flavor.",
+      "price": 5.99,
+      "unit": "lb",
+      "category": "Vegetables",
+      "subcategory": "Tomatoes",
+      "inventory": 70,
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 40,
+      "images": [
+        "/tomatoes.png",
+        "/tomato-vine.png"
+      ],
+      "status": "active",
+      "createdAt": 1627000000000,
+      "updatedAt": 1637000000000,
+      "featured": false,
+      "rating": 4.6,
+      "reviewCount": 54,
+      "salesCount": 198,
+      "specifications": {
+        "dietary": {
+          "organic": true,
+          "vegan": true
+        },
+        "weight": "1 lb"
+      },
+      "origin": {
+        "country": "USA",
+        "region": "California"
+      },
+      "certifications": ["USDA Organic"]
+    },
+    {
+      "_id": "PROD-009",
+      "name": "Organic Strawberries",
+      "description": "Sweet, juicy organic strawberries, perfect for snacking or desserts.",
+      "price": 6.99,
+      "unit": "pint",
+      "category": "Fruits",
+      "subcategory": "Berries",
+      "inventory": 45,
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 20,
+      "images": [
+        "/strawberries.png",
+        "/strawberry-field.png"
+      ],
+      "status": "draft",
+      "createdAt": 1628000000000,
+      "updatedAt": 1628000000000,
+      "featured": false,
+      "rating": 0,
+      "reviewCount": 0,
+      "salesCount": 0,
+      "specifications": {
+        "dietary": {
+          "organic": true,
+          "vegan": true
+        },
+        "weight": "1 pint"
+      },
+      "origin": {
+        "country": "USA",
+        "region": "California"
+      },
+      "certifications": ["USDA Organic"]
+    }
+  ],
+  "pagination": {
+    "total": 45,
+    "page": 1,
+    "pageSize": 10,
+    "totalPages": 5
+  },
+  "filters": {
+    "categories": [
+      "Vegetables",
+      "Fruits",
+      "Herbs"
+    ],
+    "statuses": [
+      "active",
+      "draft",
+      "out_of_stock",
+      "discontinued"
+    ]
+  }
+}

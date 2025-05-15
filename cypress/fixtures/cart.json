@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "id": "CART-ITEM-001",
+      "productId": "PROD-001",
+      "quantity": 2,
+      "product": {
+        "_id": "PROD-001",
+        "name": "Organic Carrots (5lb)",
+        "price": 4.99,
+        "unit": "bag",
+        "images": ["/bunch-of-carrots.png"]
+      }
+    },
+    {
+      "id": "CART-ITEM-002",
+      "productId": "PROD-002",
+      "quantity": 1,
+      "product": {
+        "_id": "PROD-002",
+        "name": "Artisan Sourdough Bread",
+        "price": 6.99,
+        "unit": "loaf",
+        "images": ["/sourdough-bread.png"]
+      }
+    }
+  ],
+  "totals": {
+    "itemCount": 3,
+    "subtotal": 16.97,
+    "tax": 1.70,
+    "shipping": 5.99,
+    "total": 24.66
+  }
+}

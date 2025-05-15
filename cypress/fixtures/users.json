@@ -1,0 +1,57 @@
+{
+  "admins": [
+    {
+      "id": "admin_1",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "password": "Admin123!",
+      "role": "admin"
+    }
+  ],
+  "sellers": [
+    {
+      "id": "seller_1",
+      "name": "Farm Fresh Foods",
+      "email": "seller@example.com",
+      "password": "Seller123!",
+      "role": "seller",
+      "businessName": "Farm Fresh Foods",
+      "businessType": "Producer",
+      "description": "Local farm providing fresh produce to restaurants and grocery stores."
+    },
+    {
+      "id": "seller_2",
+      "name": "Artisan Bakery",
+      "email": "bakery@example.com",
+      "password": "Baker123!",
+      "role": "seller",
+      "businessName": "Artisan Bakery",
+      "businessType": "Producer",
+      "description": "Handcrafted breads and pastries made with local ingredients."
+    }
+  ],
+  "buyers": [
+    {
+      "id": "buyer_1",
+      "name": "Restaurant Owner",
+      "email": "buyer@example.com",
+      "password": "Buyer123!",
+      "role": "buyer",
+      "businessName": "Fine Dining Restaurant",
+      "businessType": "Restaurant"
+    },
+    {
+      "id": "buyer_2",
+      "name": "Grocery Manager",
+      "email": "grocery@example.com",
+      "password": "Grocery123!",
+      "role": "buyer",
+      "businessName": "Local Grocery",
+      "businessType": "Grocery Store"
+    }
+  ],
+  "guest": {
+    "email": "guest@example.com",
+    "password": "password123"
+  }
+}

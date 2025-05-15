@@ -1,0 +1,122 @@
+{
+  "users": [
+    {
+      "_id": "USER-BUYER-001",
+      "name": "John Buyer",
+      "email": "john.buyer@example.com",
+      "role": "buyer",
+      "company": "Restaurant ABC",
+      "phone": "555-123-4567",
+      "status": "active",
+      "createdAt": 1620000000000,
+      "updatedAt": 1630000000000,
+      "lastLogin": 1640000000000,
+      "orderCount": 23,
+      "totalSpent": 2345.67,
+      "verificationStatus": "verified"
+    },
+    {
+      "_id": "USER-BUYER-002",
+      "name": "Sarah Customer",
+      "email": "sarah.customer@example.com",
+      "role": "buyer",
+      "company": "Cafe XYZ",
+      "phone": "555-234-5678",
+      "status": "active",
+      "createdAt": 1621000000000,
+      "updatedAt": 1631000000000,
+      "lastLogin": 1641000000000,
+      "orderCount": 15,
+      "totalSpent": 1567.89,
+      "verificationStatus": "verified"
+    },
+    {
+      "_id": "USER-SELLER-001",
+      "name": "Green Farms",
+      "email": "contact@greenfarms.example.com",
+      "role": "seller",
+      "businessName": "Green Farms Produce",
+      "phone": "555-987-6543",
+      "status": "active",
+      "createdAt": 1610000000000,
+      "updatedAt": 1635000000000,
+      "lastLogin": 1642000000000,
+      "productCount": 45,
+      "totalSales": 23456.78,
+      "verificationStatus": "verified"
+    },
+    {
+      "_id": "USER-SELLER-002",
+      "name": "Artisan Bakery",
+      "email": "info@artisanbakery.example.com",
+      "role": "seller",
+      "businessName": "Artisan Bakery Co.",
+      "phone": "555-876-5432",
+      "status": "active",
+      "createdAt": 1611000000000,
+      "updatedAt": 1636000000000,
+      "lastLogin": 1643000000000,
+      "productCount": 32,
+      "totalSales": 18765.43,
+      "verificationStatus": "verified"
+    },
+    {
+      "_id": "USER-ADMIN-001",
+      "name": "Admin User",
+      "email": "admin@pickle.example.com",
+      "role": "admin",
+      "status": "active",
+      "createdAt": 1600000000000,
+      "updatedAt": 1640000000000,
+      "lastLogin": 1650000000000,
+      "permissions": [
+        "manage_users",
+        "manage_products",
+        "manage_orders",
+        "manage_settings",
+        "view_analytics",
+        "manage_payments"
+      ],
+      "verificationStatus": "verified"
+    },
+    {
+      "_id": "USER-BUYER-003",
+      "name": "New User",
+      "email": "new.user@example.com",
+      "role": "buyer",
+      "company": "New Restaurant",
+      "phone": "555-345-6789",
+      "status": "pending",
+      "createdAt": 1645000000000,
+      "updatedAt": 1645000000000,
+      "lastLogin": null,
+      "orderCount": 0,
+      "totalSpent": 0,
+      "verificationStatus": "pending"
+    }
+  ],
+  "pagination": {
+    "total": 3567,
+    "page": 1,
+    "pageSize": 10,
+    "totalPages": 357
+  },
+  "filters": {
+    "roles": [
+      "buyer",
+      "seller",
+      "admin"
+    ],
+    "statuses": [
+      "active",
+      "pending",
+      "suspended",
+      "deactivated"
+    ],
+    "verificationStatuses": [
+      "verified",
+      "pending",
+      "rejected"
+    ]
+  }
+}

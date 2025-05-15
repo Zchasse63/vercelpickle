@@ -1,0 +1,112 @@
+[
+  {
+    "id": "cat_1",
+    "name": "Fresh Produce",
+    "description": "Fresh fruits and vegetables from local farms",
+    "image": "https://images.pexels.com/photos/1510392/pexels-photo-1510392.jpeg",
+    "subcategories": [
+      {
+        "id": "subcat_1",
+        "name": "Fruits",
+        "description": "Fresh seasonal fruits"
+      },
+      {
+        "id": "subcat_2",
+        "name": "Vegetables",
+        "description": "Fresh seasonal vegetables"
+      },
+      {
+        "id": "subcat_3",
+        "name": "Herbs",
+        "description": "Fresh culinary herbs"
+      }
+    ]
+  },
+  {
+    "id": "cat_2",
+    "name": "Meat & Seafood",
+    "description": "Premium quality meats and seafood",
+    "image": "https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg",
+    "subcategories": [
+      {
+        "id": "subcat_4",
+        "name": "Beef",
+        "description": "Grass-fed and grain-finished beef"
+      },
+      {
+        "id": "subcat_5",
+        "name": "Poultry",
+        "description": "Free-range chicken and turkey"
+      },
+      {
+        "id": "subcat_6",
+        "name": "Seafood",
+        "description": "Wild-caught and sustainably farmed seafood"
+      }
+    ]
+  },
+  {
+    "id": "cat_3",
+    "name": "Bakery",
+    "description": "Artisan breads and baked goods",
+    "image": "https://images.pexels.com/photos/1387075/pexels-photo-1387075.jpeg",
+    "subcategories": [
+      {
+        "id": "subcat_7",
+        "name": "Bread",
+        "description": "Artisan and specialty breads"
+      },
+      {
+        "id": "subcat_8",
+        "name": "Pastries",
+        "description": "Sweet and savory pastries"
+      }
+    ]
+  },
+  {
+    "id": "cat_4",
+    "name": "Dairy & Eggs",
+    "description": "Farm-fresh dairy products and eggs",
+    "image": "https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg",
+    "subcategories": [
+      {
+        "id": "subcat_9",
+        "name": "Milk & Cream",
+        "description": "Fresh milk and cream products"
+      },
+      {
+        "id": "subcat_10",
+        "name": "Cheese",
+        "description": "Artisan and specialty cheeses"
+      },
+      {
+        "id": "subcat_11",
+        "name": "Eggs",
+        "description": "Farm-fresh eggs"
+      }
+    ]
+  },
+  {
+    "id": "cat_5",
+    "name": "Pantry Staples",
+    "description": "Essential ingredients for your kitchen",
+    "image": "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg",
+    "subcategories": [
+      {
+        "id": "subcat_12",
+        "name": "Grains & Legumes",
+        "description": "Rice, beans, and other grains"
+      },
+      {
+        "id": "subcat_13",
+        "name": "Baking Supplies",
+        "description": "Flours, sugars, and baking ingredients"
+      },
+      {
+        "id": "subcat_14",
+        "name": "Oils & Vinegars",
+        "description": "Cooking oils and specialty vinegars"
+      }
+    ]
+  }
+]

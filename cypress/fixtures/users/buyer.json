@@ -1,0 +1,51 @@
+{
+  "_id": "USER-BUYER-001",
+  "name": "John Buyer",
+  "email": "john.buyer@example.com",
+  "role": "buyer",
+  "company": "Restaurant ABC",
+  "phone": "555-123-4567",
+  "status": "active",
+  "createdAt": 1620000000000,
+  "updatedAt": 1630000000000,
+  "shippingAddresses": [
+    {
+      "name": "Restaurant Address",
+      "street": "123 Main St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA",
+      "isDefault": true
+    },
+    {
+      "name": "Warehouse Address",
+      "street": "456 Storage Blvd",
+      "city": "Oakland",
+      "state": "CA",
+      "zip": "94612",
+      "country": "USA",
+      "isDefault": false
+    }
+  ],
+  "paymentMethods": [
+    {
+      "id": "pm_123456",
+      "type": "credit_card",
+      "brand": "visa",
+      "last4": "4242",
+      "expMonth": 12,
+      "expYear": 2025,
+      "isDefault": true
+    }
+  ],
+  "preferences": {
+    "notifications": {
+      "email": true,
+      "sms": false
+    },
+    "orderDefaults": {
+      "shippingMethod": "standard"
+    }
+  }
+}

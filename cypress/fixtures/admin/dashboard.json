@@ -1,0 +1,116 @@
+{
+  "metrics": {
+    "totalSales": 125750.45,
+    "totalOrders": 1245,
+    "averageOrderValue": 101.0,
+    "activeUsers": 3567,
+    "pendingOrders": 87,
+    "pendingProducts": 23
+  },
+  "recentActivity": [
+    {
+      "type": "order",
+      "id": "ORD-12345",
+      "description": "New order placed",
+      "amount": 156.78,
+      "timestamp": 1650000000000,
+      "status": "pending"
+    },
+    {
+      "type": "product",
+      "id": "PROD-789",
+      "description": "New product added",
+      "seller": "Green Farms",
+      "timestamp": 1649900000000,
+      "status": "pending_approval"
+    },
+    {
+      "type": "user",
+      "id": "USR-456",
+      "description": "New seller registered",
+      "name": "Organic Valley Farms",
+      "timestamp": 1649800000000,
+      "status": "pending_verification"
+    },
+    {
+      "type": "order",
+      "id": "ORD-12344",
+      "description": "Order fulfilled",
+      "amount": 89.99,
+      "timestamp": 1649700000000,
+      "status": "completed"
+    },
+    {
+      "type": "support",
+      "id": "SUP-123",
+      "description": "New support ticket",
+      "user": "John Buyer",
+      "timestamp": 1649600000000,
+      "status": "open"
+    }
+  ],
+  "salesByCategory": [
+    {
+      "category": "Vegetables",
+      "amount": 45678.90,
+      "percentage": 36.3
+    },
+    {
+      "category": "Fruits",
+      "amount": 32456.78,
+      "percentage": 25.8
+    },
+    {
+      "category": "Dairy",
+      "amount": 21345.67,
+      "percentage": 17.0
+    },
+    {
+      "category": "Meat",
+      "amount": 15678.90,
+      "percentage": 12.5
+    },
+    {
+      "category": "Bakery",
+      "amount": 10590.20,
+      "percentage": 8.4
+    }
+  ],
+  "topSellers": [
+    {
+      "id": "SELLER-001",
+      "name": "Green Farms",
+      "sales": 23456.78,
+      "orders": 234,
+      "rating": 4.8
+    },
+    {
+      "id": "SELLER-002",
+      "name": "Artisan Bakery",
+      "sales": 18765.43,
+      "orders": 198,
+      "rating": 4.7
+    },
+    {
+      "id": "SELLER-003",
+      "name": "Premium Meats",
+      "sales": 15432.10,
+      "orders": 145,
+      "rating": 4.6
+    },
+    {
+      "id": "SELLER-004",
+      "name": "Dairy Delights",
+      "sales": 12345.67,
+      "orders": 132,
+      "rating": 4.9
+    },
+    {
+      "id": "SELLER-005",
+      "name": "Organic Orchards",
+      "sales": 10987.65,
+      "orders": 112,
+      "rating": 4.5
+    }
+  ]
+}

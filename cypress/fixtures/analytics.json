@@ -1,0 +1,97 @@
+{
+  "overview": {
+    "revenue": {
+      "value": 45231.89,
+      "change": 20.1,
+      "trend": "up"
+    },
+    "orders": {
+      "value": 2350,
+      "change": 10.5,
+      "trend": "up"
+    },
+    "products": {
+      "value": 1482,
+      "change": 12.3,
+      "trend": "up"
+    },
+    "users": {
+      "value": 573,
+      "change": 7.4,
+      "trend": "up"
+    }
+  },
+  "revenueChart": {
+    "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    "datasets": [
+      {
+        "label": "Revenue",
+        "data": [18500, 22300, 19800, 24500, 28900, 32100]
+      }
+    ]
+  },
+  "topProducts": [
+    {
+      "id": "prod-1",
+      "name": "Organic Carrots (5lb)",
+      "sales": 245,
+      "revenue": 1222.55
+    },
+    {
+      "id": "prod-2",
+      "name": "Artisan Sourdough Bread",
+      "sales": 198,
+      "revenue": 1384.02
+    },
+    {
+      "id": "prod-3",
+      "name": "Free-Range Eggs (Dozen)",
+      "sales": 187,
+      "revenue": 1026.63
+    },
+    {
+      "id": "prod-4",
+      "name": "Grass-Fed Ground Beef (1lb)",
+      "sales": 156,
+      "revenue": 1402.44
+    },
+    {
+      "id": "prod-5",
+      "name": "Organic Baby Spinach (10oz)",
+      "sales": 142,
+      "revenue": 709.58
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "act-1",
+      "type": "order",
+      "description": "New order #12345 placed",
+      "time": "2023-05-15T10:30:00Z"
+    },
+    {
+      "id": "act-2",
+      "type": "user",
+      "description": "New user John Doe registered",
+      "time": "2023-05-15T09:45:00Z"
+    },
+    {
+      "id": "act-3",
+      "type": "product",
+      "description": "Product 'Organic Apples' updated",
+      "time": "2023-05-15T08:20:00Z"
+    },
+    {
+      "id": "act-4",
+      "type": "order",
+      "description": "Order #12340 status changed to 'Delivered'",
+      "time": "2023-05-15T07:15:00Z"
+    },
+    {
+      "id": "act-5",
+      "type": "product",
+      "description": "New product 'Artisan Cheese' added",
+      "time": "2023-05-14T16:50:00Z"
+    }
+  ]
+}

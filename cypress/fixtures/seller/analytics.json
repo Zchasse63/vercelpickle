@@ -1,0 +1,116 @@
+{
+  "summary": {
+    "totalSales": 23456.78,
+    "totalOrders": 234,
+    "averageOrderValue": 100.24,
+    "totalProducts": 45,
+    "activeProducts": 42,
+    "pendingOrders": 12
+  },
+  "salesTrend": {
+    "period": "last30Days",
+    "data": [
+      { "date": "2023-05-01", "sales": 789.45, "orders": 8 },
+      { "date": "2023-05-02", "sales": 678.90, "orders": 7 },
+      { "date": "2023-05-03", "sales": 890.12, "orders": 9 },
+      { "date": "2023-05-04", "sales": 765.43, "orders": 8 },
+      { "date": "2023-05-05", "sales": 987.65, "orders": 10 },
+      { "date": "2023-05-06", "sales": 876.54, "orders": 9 },
+      { "date": "2023-05-07", "sales": 654.32, "orders": 7 },
+      { "date": "2023-05-08", "sales": 543.21, "orders": 6 },
+      { "date": "2023-05-09", "sales": 432.10, "orders": 5 },
+      { "date": "2023-05-10", "sales": 321.09, "orders": 4 },
+      { "date": "2023-05-11", "sales": 210.98, "orders": 3 },
+      { "date": "2023-05-12", "sales": 109.87, "orders": 2 },
+      { "date": "2023-05-13", "sales": 198.76, "orders": 3 },
+      { "date": "2023-05-14", "sales": 287.65, "orders": 4 },
+      { "date": "2023-05-15", "sales": 376.54, "orders": 5 },
+      { "date": "2023-05-16", "sales": 465.43, "orders": 6 },
+      { "date": "2023-05-17", "sales": 554.32, "orders": 7 },
+      { "date": "2023-05-18", "sales": 643.21, "orders": 8 },
+      { "date": "2023-05-19", "sales": 732.10, "orders": 9 },
+      { "date": "2023-05-20", "sales": 821.09, "orders": 10 },
+      { "date": "2023-05-21", "sales": 910.98, "orders": 11 },
+      { "date": "2023-05-22", "sales": 999.87, "orders": 12 },
+      { "date": "2023-05-23", "sales": 888.76, "orders": 11 },
+      { "date": "2023-05-24", "sales": 777.65, "orders": 10 },
+      { "date": "2023-05-25", "sales": 666.54, "orders": 9 },
+      { "date": "2023-05-26", "sales": 555.43, "orders": 8 },
+      { "date": "2023-05-27", "sales": 444.32, "orders": 7 },
+      { "date": "2023-05-28", "sales": 333.21, "orders": 6 },
+      { "date": "2023-05-29", "sales": 222.10, "orders": 5 },
+      { "date": "2023-05-30", "sales": 111.09, "orders": 4 }
+    ],
+    "comparison": {
+      "previousPeriod": {
+        "totalSales": 21345.67,
+        "totalOrders": 213,
+        "averageOrderValue": 100.21
+      },
+      "percentChange": {
+        "totalSales": 9.89,
+        "totalOrders": 9.86,
+        "averageOrderValue": 0.03
+      }
+    }
+  },
+  "topProducts": [
+    {
+      "productId": "PROD-001",
+      "productName": "Organic Carrots (5lb)",
+      "sales": 3945.21,
+      "orders": 789,
+      "averageRating": 4.8,
+      "image": "/bunch-of-carrots.png"
+    },
+    {
+      "productId": "PROD-004",
+      "productName": "Organic Avocados",
+      "sales": 2756.55,
+      "orders": 345,
+      "averageRating": 4.9,
+      "image": "/avocados.png"
+    },
+    {
+      "productId": "PROD-007",
+      "productName": "Organic Kale",
+      "sales": 933.66,
+      "orders": 234,
+      "averageRating": 4.7,
+      "image": "/kale-bunch.png"
+    },
+    {
+      "productId": "PROD-008",
+      "productName": "Organic Tomatoes",
+      "sales": 1186.02,
+      "orders": 198,
+      "averageRating": 4.6,
+      "image": "/tomatoes.png"
+    }
+  ],
+  "customerInsights": {
+    "newCustomers": 45,
+    "returningCustomers": 189,
+    "topBuyers": [
+      {
+        "buyerId": "USER-BUYER-001",
+        "buyerName": "John Buyer",
+        "totalSpent": 2345.67,
+        "orderCount": 23
+      },
+      {
+        "buyerId": "USER-BUYER-002",
+        "buyerName": "Sarah Customer",
+        "totalSpent": 1567.89,
+        "orderCount": 15
+      },
+      {
+        "buyerId": "USER-BUYER-005",
+        "buyerName": "Michael Johnson",
+        "totalSpent": 1234.56,
+        "orderCount": 12
+      }
+    ],
+    "customerRetentionRate": 78.5
+  }
+}

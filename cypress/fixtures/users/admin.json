@@ -1,0 +1,19 @@
+{
+  "_id": "USER-ADMIN-001",
+  "name": "Admin User",
+  "email": "admin@pickle.example.com",
+  "role": "admin",
+  "status": "active",
+  "createdAt": 1600000000000,
+  "updatedAt": 1640000000000,
+  "permissions": [
+    "manage_users",
+    "manage_products",
+    "manage_orders",
+    "manage_settings",
+    "view_analytics",
+    "manage_payments"
+  ],
+  "lastLogin": 1650000000000,
+  "twoFactorEnabled": true
+}

@@ -1,0 +1,88 @@
+{
+  "order": {
+    "_id": "ORDER-001",
+    "orderNumber": "ORD-12345",
+    "buyerId": "buyer-123",
+    "buyerName": "John Doe",
+    "buyerEmail": "buyer@example.com",
+    "sellerId": "seller-123",
+    "sellerName": "Farm Fresh Foods",
+    "sellerEmail": "seller@example.com",
+    "status": "Processing",
+    "paymentStatus": "Paid",
+    "shippingStatus": "Pending",
+    "items": [
+      {
+        "productId": "PROD-001",
+        "name": "Organic Carrots",
+        "price": 9.99,
+        "quantity": 2,
+        "subtotal": 19.98,
+        "image": "/placeholder.svg"
+      },
+      {
+        "productId": "PROD-002",
+        "name": "Fresh Apples",
+        "price": 12.99,
+        "quantity": 1,
+        "subtotal": 12.99,
+        "image": "/placeholder.svg"
+      }
+    ],
+    "totals": {
+      "subtotal": 32.97,
+      "tax": 2.64,
+      "shipping": 5.00,
+      "discount": 0,
+      "total": 40.61
+    },
+    "shipping_address": {
+      "name": "John Doe",
+      "street": "123 Main St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA",
+      "phone": "555-123-4567"
+    },
+    "billing_address": {
+      "name": "John Doe",
+      "street": "123 Main St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA"
+    },
+    "payment": {
+      "method": "Credit Card",
+      "card": "**** **** **** 4242",
+      "expiry": "12/25"
+    },
+    "shipping": {
+      "method": "Standard Shipping",
+      "carrier": "FedEx",
+      "trackingNumber": "TRK123456789",
+      "estimatedDelivery": "2023-06-15"
+    },
+    "timeline": [
+      {
+        "status": "Order Placed",
+        "timestamp": 1620000000000,
+        "note": "Order successfully placed"
+      },
+      {
+        "status": "Payment Received",
+        "timestamp": 1620010000000,
+        "note": "Payment processed successfully"
+      },
+      {
+        "status": "Processing",
+        "timestamp": 1620020000000,
+        "note": "Order is being prepared for shipping"
+      }
+    ],
+    "notes": "Please leave at front door",
+    "createdAt": 1620000000000,
+    "updatedAt": 1620020000000
+  }
+}
