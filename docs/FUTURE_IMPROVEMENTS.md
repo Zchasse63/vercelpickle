@@ -50,9 +50,9 @@ This document outlines potential improvements and optimizations for the Pickle B
 
 | Task | File Path | Description | Completion Criteria | Status |
 |------|-----------|-------------|---------------------|--------|
-| Standardize Skeleton Styling | Various skeleton components | Create consistent styling for all skeleton loaders | All skeleton loaders have consistent styling | ⬜ Pending |
-| Add Animation to Skeleton Loaders | Various skeleton components | Add subtle animations to skeleton loaders | Skeleton loaders have subtle pulse animations | ⬜ Pending |
-| Implement Route-Based Code Splitting | App router configuration | Use Next.js route-based code splitting | Route-based code splitting is implemented | ⬜ Pending |
+| Standardize Skeleton Styling | Various skeleton components | Create consistent styling for all skeleton loaders | All skeleton loaders have consistent styling | ✅ Completed |
+| Add Animation to Skeleton Loaders | Various skeleton components | Add subtle animations to skeleton loaders | Skeleton loaders have subtle pulse animations | ✅ Completed |
+| Implement Route-Based Code Splitting | App router configuration | Use Next.js route-based code splitting | Route-based code splitting is implemented | ✅ Completed |
 
 ## 3. Seller Dashboard Improvements
 
@@ -79,7 +79,7 @@ This document outlines potential improvements and optimizations for the Pickle B
 | Task | File Path | Description | Completion Criteria | Status |
 |------|-----------|-------------|---------------------|--------|
 | Optimize Seller Dashboard Charts | Various chart components | Implement lazy loading for chart components | All chart components use lazy loading | ⬜ Pending |
-| Add Error Boundaries | Various seller components | Add error boundaries to seller components | All seller components have error boundaries | ⬜ Pending |
+| Add Error Boundaries | Various seller components | Add error boundaries to seller components | All seller components have error boundaries | ✅ Completed |
 | Implement Virtualized Lists | Seller list components | Use virtualized lists for long lists | Long lists use virtualization for better performance | ⬜ Pending |
 
 ## 4. Performance Optimizations

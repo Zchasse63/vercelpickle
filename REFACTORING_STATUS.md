@@ -14,7 +14,8 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Home Page | 4 | 4 | ✅ 100% |
 | Type Definitions | 7 | 7 | ✅ 100% |
 | Data Access Layer | 12 | 12 | ✅ 100% |
-| **Overall** | **59** | **59** | **✅ 100%** |
+| UI Components | 4 | 4 | ✅ 100% |
+| **Overall** | **63** | **63** | **✅ 100%** |
 
 ## Checkout Section
 
@@ -115,6 +116,15 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Add preloading to auth flows | ✅ Completed | 2023-11-22 | `903bd89` |
 | Standardize error handling | ✅ Completed | 2023-11-22 | `903bd89` |
 
+## UI Components
+
+| Task | Status | Completed Date | Commit ID |
+|------|--------|----------------|-----------|
+| Standardize skeleton styling | ✅ Completed | 2023-11-23 | `51d94e1` |
+| Add skeleton animations | ✅ Completed | 2023-11-23 | `51d94e1` |
+| Implement route-based code splitting | ✅ Completed | 2023-11-23 | `51d94e1` |
+| Add error boundaries | ✅ Completed | 2023-11-23 | `51d94e1` |
+
 ---
 
-Last updated: 2023-11-22
+Last updated: 2023-11-23
