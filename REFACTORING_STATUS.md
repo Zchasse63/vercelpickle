@@ -13,8 +13,8 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Marketplace | 6 | 6 | ✅ 100% |
 | Home Page | 4 | 4 | ✅ 100% |
 | Type Definitions | 7 | 7 | ✅ 100% |
-| Data Access Layer | 9 | 9 | ✅ 100% |
-| **Overall** | **56** | **56** | **✅ 100%** |
+| Data Access Layer | 12 | 12 | ✅ 100% |
+| **Overall** | **59** | **59** | **✅ 100%** |
 
 ## Checkout Section
 
@@ -111,7 +111,10 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Implement categories DAL | ✅ Completed | 2023-11-20 | `04f843b` |
 | Enhance auth DAL | ✅ Completed | 2023-11-21 | `6485f38` |
 | Update exports.ts | ✅ Completed | 2023-11-21 | `6485f38` |
+| Enhance caching strategy | ✅ Completed | 2023-11-22 | `903bd89` |
+| Add preloading to auth flows | ✅ Completed | 2023-11-22 | `903bd89` |
+| Standardize error handling | ✅ Completed | 2023-11-22 | `903bd89` |
 
 ---
 
-Last updated: 2023-11-21
+Last updated: 2023-11-22
