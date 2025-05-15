@@ -3,12 +3,29 @@
  *
  * This module provides a centralized interface for interacting with the Convex backend.
  * It implements consistent patterns for data fetching, error handling, and state management.
+ *
+ * Features:
+ * - Enhanced query hooks with loading, error, and success states
+ * - Enhanced mutation hooks with optimistic updates
+ * - Caching with automatic invalidation
+ * - Pagination support
+ * - Batch query support
+ * - Error handling with categorization and retry capability
+ * - Server-side data fetching
+ * - Prefetching for improved performance
  */
 
 import { toast } from "@/components/ui/use-toast";
-import { useQuery as useConvexQuery, useMutation as useConvexMutation, useAction as useConvexAction } from "convex/react";
+import {
+  useQuery as useConvexQuery,
+  useMutation as useConvexMutation,
+  useAction as useConvexAction,
+  usePaginatedQuery as useConvexPaginatedQuery
+} from "convex/react";
+import { ConvexHttpClient } from "convex/browser";
 import { FunctionReference } from "convex/server";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { api } from "@/convex/_generated/api";
 
 // Cache storage for query results
 const queryCache = new Map<string, {
@@ -247,7 +264,7 @@ export function useQuery<Args extends {}, Result>(
 }
 
 /**
- * Enhanced mutation hook with loading, error, success states, and retry capability
+ * Enhanced mutation hook with loading, error, success states, optimistic updates, and retry capability
  */
 export function useMutation<Args extends {}, Result>(
   mutation: FunctionReference<"mutation", Args, Result>,
@@ -258,6 +275,10 @@ export function useMutation<Args extends {}, Result>(
     retryCount?: number; // Number of retry attempts
     retryDelay?: number; // Delay between retries in ms
     invalidateQueries?: string[]; // Query cache keys to invalidate on success
+    optimisticUpdate?: {
+      queryKey: string; // The query cache key to update optimistically
+      updateFn: (currentData: any, args: Args) => any; // Function to update the data optimistically
+    }[];
   }
 ) {
   const [isLoading, setIsLoading] = useState(false);
@@ -272,6 +293,9 @@ export function useMutation<Args extends {}, Result>(
   // Store the latest args for retry functionality
   const latestArgs = useRef<Args | null>(null);
 
+  // Store the original data for rollback in case of error
+  const originalData = useRef<Map<string, any>>(new Map());
+
   // Function to retry the mutation
   const retry = useCallback(async () => {
     if (retryCount >= maxRetries || !latestArgs.current) return;
@@ -282,12 +306,37 @@ export function useMutation<Args extends {}, Result>(
     return execute(latestArgs.current);
   }, [retryCount, maxRetries]);
 
-  // Create a wrapped mutation function with loading, error, and success handling
+  // Create a wrapped mutation function with loading, error, success handling, and optimistic updates
   const execute = useCallback(
     async (args: Args): Promise<Result | undefined> => {
       setIsLoading(true);
       setError(null);
       latestArgs.current = args;
+
+      // Store original data for rollback and apply optimistic updates
+      if (options?.optimisticUpdate) {
+        originalData.current.clear();
+
+        for (const update of options.optimisticUpdate) {
+          const { queryKey, updateFn } = update;
+          const currentData = queryCache.get(queryKey)?.data;
+
+          if (currentData) {
+            // Store the original data for rollback
+            originalData.current.set(queryKey, currentData);
+
+            // Apply optimistic update
+            const updatedData = updateFn(currentData, args);
+
+            // Update the cache with the optimistic data
+            queryCache.set(queryKey, {
+              data: updatedData,
+              timestamp: Date.now(),
+              ttl: queryCache.get(queryKey)?.ttl || 5 * 60 * 1000
+            });
+          }
+        }
+      }
 
       try {
         const result = await mutate(args);
@@ -304,6 +353,17 @@ export function useMutation<Args extends {}, Result>(
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
         setError(error);
+
+        // Rollback optimistic updates
+        if (options?.optimisticUpdate) {
+          for (const [queryKey, data] of originalData.current.entries()) {
+            queryCache.set(queryKey, {
+              data,
+              timestamp: Date.now(),
+              ttl: queryCache.get(queryKey)?.ttl || 5 * 60 * 1000
+            });
+          }
+        }
 
         const category = categorizeError(error);
 
@@ -621,5 +681,60 @@ export function invalidateQueries(keyPattern: string | RegExp) {
     if (pattern.test(key)) {
       queryCache.delete(key);
     }
+  }
+}
+
+/**
+ * Create a Convex HTTP client for server-side data fetching
+ */
+export function createServerClient() {
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || "https://avid-dove-899.convex.cloud";
+  return new ConvexHttpClient(convexUrl);
+}
+
+/**
+ * Fetch data from Convex on the server side
+ *
+ * This function can be used in Server Components or in getServerSideProps
+ */
+export async function fetchFromServer<
+  QueryName extends keyof typeof api.query
+>(
+  queryName: QueryName,
+  args: Parameters<typeof api.query[QueryName]>[0]
+): Promise<Awaited<ReturnType<typeof api.query[QueryName]>>> {
+  const client = createServerClient();
+  return await client.query(api.query[queryName as string], args);
+}
+
+/**
+ * Prefetch a query to warm up the cache
+ *
+ * This function can be used to prefetch data that will be needed soon
+ */
+export async function prefetchQuery<
+  QueryName extends keyof typeof api.query
+>(
+  queryName: QueryName,
+  args: Parameters<typeof api.query[QueryName]>[0],
+  options?: {
+    cacheTime?: number;
+  }
+): Promise<void> {
+  try {
+    const client = createServerClient();
+    const data = await client.query(api.query[queryName as string], args);
+
+    // Generate a cache key
+    const cacheKey = `${queryName as string}:${JSON.stringify(args)}`;
+
+    // Store the result in the cache
+    queryCache.set(cacheKey, {
+      data,
+      timestamp: Date.now(),
+      ttl: options?.cacheTime ?? 5 * 60 * 1000 // Default: 5 minutes
+    });
+  } catch (error) {
+    console.error(`Error prefetching query ${queryName as string}:`, error);
   }
 }
