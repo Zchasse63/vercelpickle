@@ -1,13 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { lazyWithSkeleton } from "@/lib/utils/lazy-import";
 import { SellerSettingsSkeleton } from "./seller-settings-skeleton";
 
-// Dynamically import the SellerProfileSettings component
-export const LazySellerProfileSettings = dynamic(
+// Create a skeleton component with the correct props
+const ProfileSettingsSkeleton = () => <SellerSettingsSkeleton type="profile" />;
+
+// Dynamically import the SellerProfileSettings component using the standardized pattern
+export const LazySellerProfileSettings = lazyWithSkeleton(
   () => import("./seller-profile-settings").then(mod => ({ default: mod.SellerProfileSettings })),
+  ProfileSettingsSkeleton,
   {
-    loading: () => <SellerSettingsSkeleton type="profile" />,
-    ssr: false
+    displayName: "LazySellerProfileSettings"
   }
 );

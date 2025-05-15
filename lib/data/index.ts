@@ -27,12 +27,160 @@ import { FunctionReference } from "convex/server";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
 
-// Cache storage for query results
-const queryCache = new Map<string, {
-  data: any;
-  timestamp: number;
-  ttl: number;
-}>();
+/**
+ * Enhanced cache implementation with automatic invalidation and dependency tracking
+ */
+class QueryCache {
+  private cache = new Map<string, {
+    data: any;
+    timestamp: number;
+    ttl: number;
+    dependencies?: string[];
+  }>();
+
+  private dependents = new Map<string, Set<string>>();
+  private maxSize = 100; // Maximum number of entries in the cache
+  private cleanupInterval: NodeJS.Timeout | null = null;
+
+  constructor() {
+    // Set up automatic cleanup every 5 minutes
+    if (typeof window !== 'undefined') {
+      this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000);
+    }
+  }
+
+  /**
+   * Get a value from the cache
+   */
+  get(key: string) {
+    return this.cache.get(key);
+  }
+
+  /**
+   * Set a value in the cache with optional dependencies
+   */
+  set(key: string, value: { data: any; timestamp: number; ttl: number; dependencies?: string[] }) {
+    // If the cache is full, remove the oldest entry
+    if (this.cache.size >= this.maxSize) {
+      const oldestKey = this.getOldestKey();
+      if (oldestKey) this.delete(oldestKey);
+    }
+
+    // Store the value in the cache
+    this.cache.set(key, value);
+
+    // Register dependencies
+    if (value.dependencies) {
+      for (const dep of value.dependencies) {
+        if (!this.dependents.has(dep)) {
+          this.dependents.set(dep, new Set());
+        }
+        this.dependents.get(dep)?.add(key);
+      }
+    }
+
+    return this;
+  }
+
+  /**
+   * Delete a value from the cache and update dependencies
+   */
+  delete(key: string) {
+    // Remove the entry from the cache
+    this.cache.delete(key);
+
+    // Remove the key from all dependency lists
+    for (const [dep, keys] of this.dependents.entries()) {
+      keys.delete(key);
+      if (keys.size === 0) {
+        this.dependents.delete(dep);
+      }
+    }
+
+    // Invalidate all dependent keys
+    const dependents = this.dependents.get(key);
+    if (dependents) {
+      for (const depKey of dependents) {
+        this.delete(depKey);
+      }
+      this.dependents.delete(key);
+    }
+
+    return this;
+  }
+
+  /**
+   * Clear the entire cache
+   */
+  clear() {
+    this.cache.clear();
+    this.dependents.clear();
+    return this;
+  }
+
+  /**
+   * Get all keys in the cache
+   */
+  keys() {
+    return this.cache.keys();
+  }
+
+  /**
+   * Get the size of the cache
+   */
+  get size() {
+    return this.cache.size;
+  }
+
+  /**
+   * Check if a key exists in the cache
+   */
+  has(key: string) {
+    return this.cache.has(key);
+  }
+
+  /**
+   * Get the oldest key in the cache
+   */
+  private getOldestKey() {
+    let oldestKey: string | null = null;
+    let oldestTimestamp = Infinity;
+
+    for (const [key, value] of this.cache.entries()) {
+      if (value.timestamp < oldestTimestamp) {
+        oldestKey = key;
+        oldestTimestamp = value.timestamp;
+      }
+    }
+
+    return oldestKey;
+  }
+
+  /**
+   * Clean up expired entries
+   */
+  private cleanup() {
+    const now = Date.now();
+    for (const [key, value] of this.cache.entries()) {
+      if (now - value.timestamp > value.ttl) {
+        this.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Dispose of the cache
+   */
+  dispose() {
+    if (this.cleanupInterval) {
+      clearInterval(this.cleanupInterval);
+      this.cleanupInterval = null;
+    }
+  }
+}
+
+// Create a singleton instance of the cache
+const queryCache = new QueryCache();
 
 /**
  * Error categories for better error handling
@@ -151,6 +299,36 @@ export function useQuery<Args extends {}, Result>(
     return `${queryName}:${JSON.stringify(args)}`;
   }, [query, args]);
 
+  // Extract entity type and ID from the query for dependency tracking
+  const dependencies = useMemo(() => {
+    if (args === "skip" || !cacheKey) return undefined;
+
+    const queryName = (query as any)._functionName || "";
+    const parts = queryName.split('.');
+
+    if (parts.length < 2) return undefined;
+
+    const entityType = parts[0]; // e.g., 'users', 'products', etc.
+
+    // Extract IDs from args for dependency tracking
+    const extractedIds: string[] = [];
+
+    if (typeof args === 'object') {
+      // Look for common ID patterns in args
+      for (const [key, value] of Object.entries(args)) {
+        if (
+          (key === 'id' || key.endsWith('Id')) &&
+          typeof value === 'string' &&
+          value.startsWith('_')
+        ) {
+          extractedIds.push(`${entityType}:${value}`);
+        }
+      }
+    }
+
+    return extractedIds.length > 0 ? extractedIds : undefined;
+  }, [query, args, cacheKey]);
+
   // Check if we have a cached result
   const cachedResult = useMemo(() => {
     if (!cacheKey || cacheTime === 0) return null;
@@ -221,7 +399,8 @@ export function useQuery<Args extends {}, Result>(
         queryCache.set(cacheKey, {
           data: result,
           timestamp: Date.now(),
-          ttl: cacheTime
+          ttl: cacheTime,
+          dependencies
         });
       }
 
@@ -670,11 +849,32 @@ export function clearQueryCache() {
 }
 
 /**
- * Utility to invalidate specific queries by key pattern
+ * Utility to invalidate specific queries by key pattern or entity ID
+ *
+ * @param keyPattern - A string pattern or RegExp to match cache keys, or an entity ID (e.g., 'users:_123')
+ * @param options - Additional options for invalidation
  */
-export function invalidateQueries(keyPattern: string | RegExp) {
+export function invalidateQueries(
+  keyPattern: string | RegExp,
+  options?: {
+    exact?: boolean; // If true, only invalidate exact matches
+    invalidateDependents?: boolean; // If true, also invalidate dependent queries
+  }
+) {
+  const { exact = false, invalidateDependents = true } = options || {};
+
+  // If it looks like an entity ID (e.g., 'users:_123'), invalidate all dependent queries
+  if (typeof keyPattern === 'string' && keyPattern.includes(':') && invalidateDependents) {
+    // This will automatically invalidate all dependent queries
+    queryCache.delete(keyPattern);
+    return;
+  }
+
+  // Otherwise, use pattern matching
   const pattern = typeof keyPattern === 'string'
-    ? new RegExp(`^${keyPattern.replace(/\*/g, '.*')}$`)
+    ? exact
+      ? new RegExp(`^${keyPattern}$`)
+      : new RegExp(`^${keyPattern.replace(/\*/g, '.*')}$`)
     : keyPattern;
 
   for (const key of queryCache.keys()) {
@@ -682,6 +882,16 @@ export function invalidateQueries(keyPattern: string | RegExp) {
       queryCache.delete(key);
     }
   }
+}
+
+/**
+ * Utility to invalidate queries by entity type and ID
+ *
+ * @param entityType - The type of entity (e.g., 'users', 'products')
+ * @param entityId - The ID of the entity
+ */
+export function invalidateEntity(entityType: string, entityId: string) {
+  invalidateQueries(`${entityType}:${entityId}`);
 }
 
 /**
@@ -719,6 +929,7 @@ export async function prefetchQuery<
   args: Parameters<typeof api.query[QueryName]>[0],
   options?: {
     cacheTime?: number;
+    dependencies?: string[];
   }
 ): Promise<void> {
   try {
@@ -728,11 +939,41 @@ export async function prefetchQuery<
     // Generate a cache key
     const cacheKey = `${queryName as string}:${JSON.stringify(args)}`;
 
+    // Extract entity type and ID from the query for dependency tracking
+    let dependencies = options?.dependencies;
+
+    if (!dependencies) {
+      const parts = (queryName as string).split('.');
+
+      if (parts.length >= 2) {
+        const entityType = parts[0]; // e.g., 'users', 'products', etc.
+        const extractedIds: string[] = [];
+
+        if (typeof args === 'object') {
+          // Look for common ID patterns in args
+          for (const [key, value] of Object.entries(args)) {
+            if (
+              (key === 'id' || key.endsWith('Id')) &&
+              typeof value === 'string' &&
+              value.startsWith('_')
+            ) {
+              extractedIds.push(`${entityType}:${value}`);
+            }
+          }
+        }
+
+        if (extractedIds.length > 0) {
+          dependencies = extractedIds;
+        }
+      }
+    }
+
     // Store the result in the cache
     queryCache.set(cacheKey, {
       data,
       timestamp: Date.now(),
-      ttl: options?.cacheTime ?? 5 * 60 * 1000 // Default: 5 minutes
+      ttl: options?.cacheTime ?? 5 * 60 * 1000, // Default: 5 minutes
+      dependencies
     });
   } catch (error) {
     console.error(`Error prefetching query ${queryName as string}:`, error);

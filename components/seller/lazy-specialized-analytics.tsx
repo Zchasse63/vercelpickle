@@ -1,13 +1,13 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { lazyWithSkeleton } from "@/lib/utils/lazy-import";
 import { SpecializedAnalyticsSkeleton } from "./specialized-analytics-skeleton";
 
-// Dynamically import the SpecializedAnalytics component
-export const LazySpecializedAnalytics = dynamic(
+// Dynamically import the SpecializedAnalytics component using the standardized pattern
+export const LazySpecializedAnalytics = lazyWithSkeleton(
   () => import("./specialized-analytics").then(mod => ({ default: mod.SpecializedAnalytics })),
+  SpecializedAnalyticsSkeleton,
   {
-    loading: () => <SpecializedAnalyticsSkeleton />,
-    ssr: false
+    displayName: "LazySpecializedAnalytics"
   }
 );

@@ -109,6 +109,9 @@ export function useLogin() {
         // Store userId in localStorage
         localStorage.setItem("userId", result.user.id);
 
+        // Prefetch data for post-login navigation
+        prefetchPostAuthData(result.user);
+
         toast({
           title: "Login successful",
           description: `Welcome back, ${result.user.name}!`,
@@ -187,6 +190,9 @@ export function useRegister() {
       if (result.success) {
         // Store userId in localStorage
         localStorage.setItem("userId", result.user.id);
+
+        // Prefetch data for post-registration navigation
+        prefetchPostAuthData(result.user);
 
         toast({
           title: "Registration successful",
@@ -293,4 +299,42 @@ export async function getCurrentUser(userId: Id<"users">) {
 export async function prefetchCurrentUser(userId: Id<"users">) {
   if (!userId) return;
   await prefetchQuery("auth.me", { userId }, { cacheTime: 10 * 60 * 1000 });
+}
+
+/**
+ * Prefetch data for post-authentication navigation based on user role
+ * This function prefetches data that will be needed after login/registration
+ */
+export async function prefetchPostAuthData(user: User) {
+  if (!user) return;
+
+  try {
+    // Common data for all users
+    await prefetchQuery("auth.me", { userId: user.id }, { cacheTime: 10 * 60 * 1000 });
+
+    // Role-specific data
+    switch (user.role) {
+      case "buyer":
+        // Prefetch buyer dashboard data
+        await prefetchQuery("orders.getRecentOrdersByBuyer", { buyerId: user.id, limit: 5 });
+        await prefetchQuery("products.getFeaturedProducts", { limit: 8 });
+        await prefetchQuery("cart.getCart", { userId: user.id });
+        break;
+
+      case "seller":
+        // Prefetch seller dashboard data
+        await prefetchQuery("orders.getRecentOrdersBySeller", { sellerId: user.id, limit: 5 });
+        await prefetchQuery("products.getProductsBySeller", { sellerId: user.id, limit: 10 });
+        break;
+
+      case "admin":
+        // Prefetch admin dashboard data
+        await prefetchQuery("orders.getRecentOrders", { limit: 10 });
+        await prefetchQuery("users.getRecentUsers", { limit: 10 });
+        break;
+    }
+  } catch (error) {
+    console.error("Error prefetching post-auth data:", error);
+    // Don't throw - prefetching failures shouldn't block the main flow
+  }
 }
