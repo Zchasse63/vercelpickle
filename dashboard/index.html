@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickle B2B Refactoring Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    .header {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #dee2e6;
+      padding-bottom: 20px;
+    }
+    .progress {
+      height: 25px;
+    }
+    .card {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      font-weight: bold;
+    }
+    .task-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .task-item {
+      padding: 8px 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .task-item:last-child {
+      border-bottom: none;
+    }
+    .task-item.completed {
+      background-color: #f0fff0;
+    }
+    .task-item.pending {
+      background-color: #fff;
+    }
+    .badge-completed {
+      background-color: #28a745;
+    }
+    .badge-pending {
+      background-color: #6c757d;
+    }
+    .current-focus {
+      border: 2px solid #007bff;
+    }
+    .section-link {
+      color: #495057;
+      text-decoration: none;
+    }
+    .section-link:hover {
+      color: #007bff;
+    }
+    .commit-link {
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+    .last-updated {
+      font-style: italic;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="display-4">Pickle B2B Marketplace</h1>
+      <h2>Refactoring Project Dashboard</h2>
+      <p class="lead">Track the progress of our refactoring efforts across all application sections.</p>
+      <div class="row align-items-center">
+        <div class="col-md-9">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" id="overall-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <span class="ms-2" id="overall-percentage">0% Complete</span>
+        </div>
+      </div>
+      <p class="last-updated mt-2">Last updated: <span id="last-updated-date">Loading...</span></p>
+    </div>
+
+    <div class="row" id="sections-container">
+      <!-- Section cards will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <script>
+    // Fetch and parse the REFACTORING_STATUS.md file
+    async function fetchStatusData() {
+      try {
+        const response = await fetch('../REFACTORING_STATUS.md');
+        const text = await response.text();
+        return parseMarkdown(text);
+      } catch (error) {
+        console.error('Error fetching status data:', error);
+        return null;
+      }
+    }
+
+    // Parse the markdown content
+    function parseMarkdown(markdown) {
+      const lines = markdown.split('\n');
+      const data = {
+        sections: [],
+        lastUpdated: '',
+        overallProgress: 0
+      };
+
+      let currentSection = null;
+      let inProgressTable = false;
+      let inSectionTable = false;
+
+      for (const line of lines) {
+        // Extract last updated date
+        if (line.startsWith('Last updated:')) {
+          data.lastUpdated = line.replace('Last updated:', '').trim();
+        }
+
+        // Extract overall progress
+        if (line.includes('| **Overall** |')) {
+          const match = line.match(/\| \*\*Overall\*\* \| \*\*(\d+)\*\* \| \*\*(\d+)\*\* \| \*\*[^0-9]*(\d+)%\*\* \|/);
+          if (match) {
+            const completed = parseInt(match[1]);
+            const total = parseInt(match[2]);
+            const percentage = parseInt(match[3]);
+            data.overallProgress = percentage;
+          }
+        }
+
+        // Extract section headers
+        const sectionMatch = line.match(/^## ([^#]+)$/);
+        if (sectionMatch && !line.includes('Progress Summary')) {
+          const sectionName = sectionMatch[1].trim();
+          currentSection = {
+            name: sectionName,
+            tasks: [],
+            completed: 0,
+            total: 0,
+            percentage: 0,
+            isFocus: false
+          };
+          data.sections.push(currentSection);
+          inSectionTable = false;
+          continue;
+        }
+
+        // Extract progress summary data
+        if (inProgressTable && line.startsWith('|') && !line.includes('Section') && !line.includes('---') && !line.includes('Overall')) {
+          const columns = line.split('|').map(col => col.trim()).filter(col => col);
+          if (columns.length >= 4) {
+            const sectionName = columns[0];
+            const completed = parseInt(columns[1]);
+            const total = parseInt(columns[2]);
+            const progressText = columns[3];
+            const percentage = parseInt(progressText.match(/(\d+)%/)?.[1] || '0');
+            
+            // Find the corresponding section and update its progress
+            const section = data.sections.find(s => s.name === sectionName);
+            if (section) {
+              section.completed = completed;
+              section.total = total;
+              section.percentage = percentage;
+              
+              // Mark Admin Dashboard as current focus
+              if (sectionName === 'Admin Dashboard') {
+                section.isFocus = true;
+              }
+            }
+          }
+        }
+
+        // Check if we're in the progress summary table
+        if (line.includes('| Section | Completed | Total | Progress |')) {
+          inProgressTable = true;
+          continue;
+        }
+
+        // Check if we're in a section task table
+        if (line.includes('| Task | Status |') && currentSection) {
+          inSectionTable = true;
+          continue;
+        }
+
+        // Skip table separator lines
+        if (line.includes('|------|--------|') && inSectionTable) {
+          continue;
+        }
+
+        // Extract task data
+        if (inSectionTable && line.startsWith('|') && currentSection) {
+          const columns = line.split('|').map(col => col.trim()).filter(col => col);
+          if (columns.length >= 4) {
+            const task = {
+              name: columns[0],
+              status: columns[1].includes('✅') ? 'completed' : 'pending',
+              date: columns[2],
+              commitId: columns[3]?.replace(/`/g, '') || ''
+            };
+            currentSection.tasks.push(task);
+          }
+        }
+      }
+
+      return data;
+    }
+
+    // Render the dashboard
+    function renderDashboard(data) {
+      if (!data) {
+        document.body.innerHTML = '<div class="container"><div class="alert alert-danger">Error loading data</div></div>';
+        return;
+      }
+
+      // Update last updated date
+      document.getElementById('last-updated-date').textContent = data.lastUpdated;
+
+      // Update overall progress
+      const overallProgressBar = document.getElementById('overall-progress');
+      overallProgressBar.style.width = `${data.overallProgress}%`;
+      overallProgressBar.setAttribute('aria-valuenow', data.overallProgress);
+      document.getElementById('overall-percentage').textContent = `${data.overallProgress}% Complete`;
+
+      // Render section cards
+      const sectionsContainer = document.getElementById('sections-container');
+      sectionsContainer.innerHTML = '';
+
+      data.sections.forEach(section => {
+        const card = document.createElement('div');
+        card.className = `col-md-6 col-lg-4 ${section.isFocus ? 'current-focus' : ''}`;
+        
+        let tasksHtml = '';
+        section.tasks.forEach(task => {
+          const statusBadge = task.status === 'completed' 
+            ? `<span class="badge badge-completed float-end">Completed</span>` 
+            : `<span class="badge badge-pending float-end">Pending</span>`;
+          
+          const commitLink = task.commitId && task.status === 'completed'
+            ? `<a href="https://github.com/Zchasse63/vercelpickle/commit/${task.commitId}" class="commit-link ms-2" target="_blank">${task.commitId}</a>`
+            : '';
+          
+          tasksHtml += `
+            <div class="task-item ${task.status}">
+              ${task.name} ${statusBadge}
+              ${task.date ? `<div><small>${task.date} ${commitLink}</small></div>` : ''}
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="card ${section.isFocus ? 'current-focus' : ''}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>${section.name}</span>
+              <span class="badge ${section.percentage === 100 ? 'badge-completed' : 'badge-pending'}">
+                ${section.percentage}%
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="progress mb-3">
+                <div class="progress-bar" role="progressbar" style="width: ${section.percentage}%" 
+                     aria-valuenow="${section.percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="task-list">
+                ${tasksHtml}
+              </div>
+            </div>
+            <div class="card-footer">
+              <small>${section.completed} of ${section.total} tasks completed</small>
+              ${section.isFocus ? '<span class="badge bg-primary float-end">Current Focus</span>' : ''}
+            </div>
+          </div>
+        `;
+        
+        sectionsContainer.appendChild(card);
+      });
+    }
+
+    // Initialize the dashboard
+    async function initDashboard() {
+      const data = await fetchStatusData();
+      renderDashboard(data);
+    }
+
+    // Load the dashboard when the page loads
+    document.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>
