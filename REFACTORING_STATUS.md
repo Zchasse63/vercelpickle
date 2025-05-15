@@ -8,13 +8,13 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 |---------|-----------|-------|----------|
 | Checkout | 3 | 3 | ✅ 100% |
 | Buyer Dashboard | 6 | 6 | ✅ 100% |
-| Seller Dashboard | 8 | 8 | ✅ 100% |
+| Seller Dashboard | 13 | 13 | ✅ 100% |
 | Admin Dashboard | 8 | 8 | ✅ 100% |
 | Marketplace | 6 | 6 | ✅ 100% |
 | Home Page | 4 | 4 | ✅ 100% |
 | Type Definitions | 7 | 7 | ✅ 100% |
-| Data Access Layer | 7 | 7 | ✅ 100% |
-| **Overall** | **49** | **49** | **✅ 100%** |
+| Data Access Layer | 9 | 9 | ✅ 100% |
+| **Overall** | **56** | **56** | **✅ 100%** |
 
 ## Checkout Section
 
@@ -47,6 +47,11 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Implement lazy loading for seller components | ✅ Completed | 2023-11-17 | `i7j8k9l` |
 | Create seller client page with lazy components | ✅ Completed | 2023-11-17 | `i7j8k9l` |
 | Update seller page layout | ✅ Completed | 2023-11-17 | `i7j8k9l` |
+| Create negotiation process skeleton | ✅ Completed | 2023-11-21 | `6485f38` |
+| Create pickup scheduling skeleton | ✅ Completed | 2023-11-21 | `6485f38` |
+| Create freight arrangements skeleton | ✅ Completed | 2023-11-21 | `6485f38` |
+| Create time-sensitive deals skeleton | ✅ Completed | 2023-11-21 | `6485f38` |
+| Create client pages for seller sections | ✅ Completed | 2023-11-21 | `6485f38` |
 
 ## Admin Dashboard Section
 
@@ -104,7 +109,9 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Implement cart DAL | ✅ Completed | 2023-11-20 | `04f843b` |
 | Implement reviews DAL | ✅ Completed | 2023-11-20 | `04f843b` |
 | Implement categories DAL | ✅ Completed | 2023-11-20 | `04f843b` |
+| Enhance auth DAL | ✅ Completed | 2023-11-21 | `6485f38` |
+| Update exports.ts | ✅ Completed | 2023-11-21 | `6485f38` |
 
 ---
 
-Last updated: 2023-11-20
+Last updated: 2023-11-21
