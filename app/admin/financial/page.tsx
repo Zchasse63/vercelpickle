@@ -1,4 +1,4 @@
-import { AdminFinancialDashboardLazy } from "@/components/admin/lazy-admin-components"
+import { AdminFinancialDashboard } from "@/components/admin/lazy-admin-components"
 
 export default function AdminFinancialPage() {
   return (
@@ -9,7 +9,7 @@ export default function AdminFinancialPage() {
       </div>
 
       <div className="space-y-4 animate-fade-up delay-100">
-        <AdminFinancialDashboardLazy />
+        <AdminFinancialDashboard />
       </div>
     </div>
   )

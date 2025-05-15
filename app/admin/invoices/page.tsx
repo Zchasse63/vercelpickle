@@ -1,4 +1,4 @@
-import { AdminInvoiceManagementLazy } from "@/components/admin/lazy-admin-components"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AdminInvoicesPage() {
   return (
@@ -9,7 +9,17 @@ export default function AdminInvoicesPage() {
       </div>
 
       <div className="space-y-4 animate-fade-up delay-100">
-        <AdminInvoiceManagementLazy />
+        <Card className="hover-lift">
+          <CardHeader>
+            <CardTitle>Invoice Management</CardTitle>
+            <CardDescription>Create, view, and manage invoices</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[400px] flex items-center justify-center border rounded-md">
+              <p className="text-muted-foreground">Invoice management interface will be displayed here</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
