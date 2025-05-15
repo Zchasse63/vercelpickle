@@ -1,80 +1,18 @@
 /**
  * Type definitions for the Pickle B2B Marketplace
+ *
+ * This file re-exports all types from the dedicated type files
+ * for easier importing throughout the application.
  */
 
-// User types
-export type UserRole = "admin" | "seller" | "buyer";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  image?: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
-// Product types
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  sellerId: string;
-  category: string;
-  subcategory?: string;
-  images: string[];
-  inventory: number;
-  unit: string;
-  minimumOrder?: number;
-  isOrganic: boolean;
-  isLocal: boolean;
-  nutritionFacts?: string;
-  allergens?: string[];
-  storageInstructions?: string;
-  certifications?: string[];
-  createdAt: number;
-  updatedAt: number;
-}
-
-// Order types
-export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-export type PaymentStatus = "pending" | "paid" | "refunded" | "failed";
-
-export interface OrderItem {
-  productId: string;
-  quantity: number;
-  price: number;
-}
-
-export interface Address {
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
-
-export interface Order {
-  id: string;
-  buyerId: string;
-  sellerId: string;
-  items: OrderItem[];
-  subtotal: number;
-  tax: number;
-  shipping: number;
-  total: number;
-  status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  paymentMethod: string;
-  shippingAddress: Address;
-  billingAddress: Address;
-  deliveryDate?: number;
-  notes?: string;
-  createdAt: number;
-  updatedAt: number;
-}
+// Re-export all types from dedicated files
+export * from './user';
+export * from './product';
+export * from './order';
+export * from './cart';
+export * from './payment';
+export * from './ui';
+export * from './convex';
 
 // Review types
 export interface Review {
@@ -95,16 +33,6 @@ export interface Category {
   description?: string;
   image?: string;
   parentId?: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
-// Cart types
-export interface CartItem {
-  id: string;
-  userId: string;
-  productId: string;
-  quantity: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -132,37 +60,3 @@ export interface SupportMessage {
   message: string;
   createdAt: number;
 }
-
-// API response types
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-// Pagination types
-export interface PaginationParams {
-  page: number;
-  limit: number;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-// Search types
-export interface SearchParams {
-  query: string;
-  filters?: Record<string, any>;
-  sort?: {
-    field: string;
-    order: "asc" | "desc";
-  };
-}
-
-// Theme types
-export type Theme = "light" | "dark" | "system";
