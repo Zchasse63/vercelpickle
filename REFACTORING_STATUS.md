@@ -11,10 +11,10 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 | Seller Dashboard | 8 | 8 | ✅ 100% |
 | Admin Dashboard | 8 | 8 | ✅ 100% |
 | Marketplace | 6 | 6 | ✅ 100% |
-| Home Page | 0 | 4 | ⬜ 0% |
+| Home Page | 4 | 4 | ✅ 100% |
 | Type Definitions | 7 | 7 | ✅ 100% |
 | Data Access Layer | 3 | 7 | ⏳ 43% |
-| **Overall** | **41** | **49** | **⏳ 84%** |
+| **Overall** | **45** | **49** | **⏳ 92%** |
 
 ## Checkout Section
 
@@ -76,10 +76,10 @@ This document tracks the status of all refactoring tasks for the Pickle B2B Mark
 
 | Task | Status | Completed Date | Commit ID |
 |------|--------|----------------|-----------|
-| Create featured products skeleton | ⬜ Pending | - | - |
-| Create category showcase skeleton | ⬜ Pending | - | - |
-| Implement lazy loading for home page components | ⬜ Pending | - | - |
-| Update home page with lazy components | ⬜ Pending | - | - |
+| Create featured products skeleton | ✅ Completed | 2023-11-20 | `cee02e3` |
+| Create category showcase skeleton | ✅ Completed | 2023-11-20 | `cee02e3` |
+| Implement lazy loading for home page components | ✅ Completed | 2023-11-20 | `cee02e3` |
+| Update home page with lazy components | ✅ Completed | 2023-11-20 | `cee02e3` |
 
 ## Type Definitions
 
