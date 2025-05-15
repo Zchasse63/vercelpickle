@@ -1,14 +1,17 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo, useEffect } from "react"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { MarketplaceProductFilters } from "@/components/marketplace/marketplace-product-filters"
-import { MarketplaceAdvancedFiltersLazy } from "@/components/marketplace/lazy-marketplace-components"
-import { MarketplaceProductSortingLazy } from "@/components/marketplace/lazy-marketplace-components"
+import {
+  MarketplaceAdvancedFiltersLazy,
+  MarketplaceProductSortingLazy,
+  MarketplaceProductComparisonLazy,
+  VirtualizedProductGridLazy,
+  preloadMarketplaceComponents
+} from "@/components/marketplace/lazy-marketplace-components-with-suffix"
 import { MarketplaceViewToggle, ViewMode } from "@/components/marketplace/marketplace-view-toggle"
-import { MarketplaceProductComparisonLazy } from "@/components/marketplace/lazy-marketplace-components"
-import { VirtualizedProductGridLazy } from "@/components/marketplace/lazy-marketplace-components"
 import { MarketplacePersistentCart } from "@/components/marketplace/marketplace-persistent-cart"
 import { useCart } from "@/hooks/use-cart"
 import { useAuth } from "@/providers/auth-provider"
@@ -19,7 +22,7 @@ interface MarketplaceInteractiveClientProps {
   categories: any[]
 }
 
-export function MarketplaceInteractiveClient({ 
+export function MarketplaceInteractiveClient({
   initialProducts,
   categories
 }: MarketplaceInteractiveClientProps) {
@@ -29,7 +32,17 @@ export function MarketplaceInteractiveClient({
   const [comparisonProducts, setComparisonProducts] = useState<any[]>([])
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([])
   const [filters, setFilters] = useState<any>({})
-  
+
+  // Preload marketplace components when the component mounts
+  useEffect(() => {
+    // Preload all marketplace components after a short delay
+    const timer = setTimeout(() => {
+      preloadMarketplaceComponents();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Get the authenticated user
   const { user } = useAuth();
 
@@ -316,7 +329,7 @@ export function MarketplaceInteractiveClient({
     }
 
     setSelectedProductIds(prev => [...prev, productId]);
-    
+
     // We need to call fetchComparisonProducts in the next tick
     // to ensure selectedProductIds has been updated
     setTimeout(() => {
@@ -345,11 +358,11 @@ export function MarketplaceInteractiveClient({
           </div>
         </div>
       )}
-      
+
       {/* Left Sidebar - Filters */}
       <div className="space-y-6 animate-fade-left" data-testid="filter-sidebar">
         <div className="bg-white rounded-lg shadow-md p-6 border border-dill-green/20">
-          <MarketplaceProductFilters 
+          <MarketplaceProductFilters
             onFilterChange={handleFilterChange}
             categories={categories}
           />
