@@ -1,13 +1,32 @@
 /**
  * User Data Access Layer
- * 
+ *
  * This module provides hooks and utilities for interacting with user data in Convex.
+ * It implements consistent patterns for data fetching, error handling, and state management.
+ *
+ * Features:
+ * - Hooks for fetching user profiles with various filters
+ * - Hooks for creating, updating, and managing user data
+ * - Optimistic updates for better user experience
+ * - Server-side data fetching for SSR and SSG
+ * - Caching with automatic invalidation
+ * - Error handling with retry capability
  */
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { toast } from "@/components/ui/use-toast";
-import { useQuery, useMutation } from "./index";
+import {
+  useQuery,
+  useMutation,
+  usePaginatedQuery,
+  useBatchQuery,
+  PaginationParams,
+  invalidateQueries,
+  fetchFromServer,
+  prefetchQuery
+} from "./index";
+import { useMemo } from "react";
 
 /**
  * User profile data structure
@@ -40,13 +59,32 @@ export interface UserProfileUpdate {
 }
 
 /**
- * Hook for fetching a user profile by ID
+ * User filter parameters
+ */
+export interface UserFilterParams extends PaginationParams {
+  role?: string;
+  search?: string;
+  status?: string;
+  location?: string;
+  sortBy?: 'name' | 'createdAt' | 'updatedAt' | 'role';
+  sortDirection?: 'asc' | 'desc';
+}
+
+/**
+ * Hook for fetching a user profile by ID with caching
  */
 export function useUserProfile(userId: Id<"users"> | null | undefined) {
   return useQuery(
     api.users.getById,
     userId ? { id: userId } : "skip",
     {
+      // Cache for 10 minutes
+      cacheTime: 10 * 60 * 1000,
+      // Consider stale after 2 minutes
+      staleTime: 2 * 60 * 1000,
+      // Enable automatic retry
+      retry: true,
+      retryCount: 3,
       onSuccess: (data) => {
         // Optional success handling
       },
@@ -55,7 +93,36 @@ export function useUserProfile(userId: Id<"users"> | null | undefined) {
 }
 
 /**
- * Hook for updating a user profile
+ * Hook for fetching all users with pagination and filtering
+ */
+export function useUsers(filters?: UserFilterParams) {
+  // Set default values
+  const defaultFilters: UserFilterParams = {
+    limit: 20,
+    sortBy: 'createdAt',
+    sortDirection: 'desc',
+  };
+
+  // Merge default filters with provided filters
+  const mergedFilters = { ...defaultFilters, ...filters };
+
+  // Use the paginated query hook
+  return usePaginatedQuery(
+    api.users.getAll,
+    mergedFilters,
+    {
+      // Cache for 5 minutes
+      cacheTime: 5 * 60 * 1000,
+      // Consider stale after 1 minute
+      staleTime: 60 * 1000,
+      // Enable automatic retry
+      retry: true,
+    }
+  );
+}
+
+/**
+ * Hook for updating a user profile with optimistic updates
  */
 export function useUpdateUserProfile() {
   const mutation = useMutation(api.users.update, {
@@ -65,10 +132,30 @@ export function useUpdateUserProfile() {
         description: "Your profile has been updated successfully.",
       });
     },
+    retry: true,
+    retryCount: 3,
+    invalidateQueries: ["users.getById", "users.getAll"],
+    optimisticUpdate: [
+      {
+        queryKey: "users.getById",
+        updateFn: (currentData, args) => {
+          if (!currentData) return currentData;
+
+          return {
+            ...currentData,
+            ...args,
+            updatedAt: Date.now(),
+          };
+        }
+      }
+    ]
   });
 
   return {
     updateProfile: async (id: Id<"users">, data: UserProfileUpdate) => {
+      // Invalidate the specific user query
+      invalidateQueries(`users.getById:${JSON.stringify({ id })}`);
+
       return await mutation.execute({
         id,
         ...data,
@@ -76,17 +163,75 @@ export function useUpdateUserProfile() {
     },
     isLoading: mutation.isLoading,
     error: mutation.error,
+    retry: mutation.retry,
   };
 }
 
 /**
- * Hook for fetching business profile by user ID
+ * Hook for creating a new user
+ */
+export function useCreateUser() {
+  const mutation = useMutation(api.users.create, {
+    onSuccess: () => {
+      toast({
+        title: "User created",
+        description: "The user has been created successfully.",
+      });
+    },
+    retry: true,
+    retryCount: 3,
+    invalidateQueries: ["users.getAll"]
+  });
+
+  return {
+    createUser: async (data: Omit<UserProfile, 'id' | 'createdAt' | 'updatedAt'>) => {
+      return await mutation.execute(data);
+    },
+    isLoading: mutation.isLoading,
+    error: mutation.error,
+    retry: mutation.retry,
+  };
+}
+
+/**
+ * Hook for fetching business profile by user ID with caching
  */
 export function useBusinessProfile(userId: Id<"users"> | null | undefined) {
   return useQuery(
     api.users.getBusinessProfileByUserId,
-    userId ? { userId } : "skip"
+    userId ? { userId } : "skip",
+    {
+      // Cache for 10 minutes
+      cacheTime: 10 * 60 * 1000,
+      // Consider stale after 2 minutes
+      staleTime: 2 * 60 * 1000,
+      // Enable automatic retry
+      retry: true,
+      retryCount: 3,
+    }
   );
+}
+
+/**
+ * Hook for searching users
+ */
+export function useSearchUsers(query: string | null | undefined) {
+  // Use the enhanced users hook with search parameter
+  return useUsers({
+    search: query || undefined,
+    limit: 50, // Increase limit for search results
+  });
+}
+
+/**
+ * Hook for filtering users by role
+ */
+export function useUsersByRole(role: string | null | undefined) {
+  // Use the enhanced users hook with role parameter
+  return useUsers({
+    role: role || undefined,
+    limit: 50, // Increase limit for role filtering
+  });
 }
 
 /**
@@ -189,4 +334,37 @@ export function useUserPaymentMethods(userId: Id<"users"> | null | undefined) {
     error: null,
     isError: false,
   };
+}
+
+/**
+ * Server-side functions for fetching users
+ * These can be used in Server Components or in getServerSideProps
+ */
+
+/**
+ * Fetch a user by ID on the server side
+ */
+export async function getUserById(userId: Id<"users">) {
+  return await fetchFromServer("users.getById", { id: userId });
+}
+
+/**
+ * Fetch all users on the server side with pagination and filtering
+ */
+export async function getAllUsers(filters?: UserFilterParams) {
+  const defaultFilters: UserFilterParams = {
+    limit: 20,
+    sortBy: 'createdAt',
+    sortDirection: 'desc',
+  };
+
+  const mergedFilters = { ...defaultFilters, ...filters };
+  return await fetchFromServer("users.getAll", mergedFilters);
+}
+
+/**
+ * Fetch a business profile by user ID on the server side
+ */
+export async function getBusinessProfileByUserId(userId: Id<"users">) {
+  return await fetchFromServer("users.getBusinessProfileByUserId", { userId });
 }

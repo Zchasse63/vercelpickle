@@ -738,3 +738,11 @@ export async function prefetchQuery<
     console.error(`Error prefetching query ${queryName as string}:`, error);
   }
 }
+
+// Re-export from individual modules
+export * from "./users";
+export * from "./cart";
+export * from "./products";
+export * from "./orders";
+export * from "./reviews";
+export * from "./categories";
