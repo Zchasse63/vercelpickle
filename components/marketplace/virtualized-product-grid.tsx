@@ -3,10 +3,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProductCard } from "@/components/marketplace/product-card";
 import { cn } from "@/lib/utils";
-import { memoWithComparison, useRenderCount, useIntersectionObserver } from "@/lib/performance";
+import { memoWithComparison, useRenderCount } from "@/lib/performance";
 import { ProductGridSkeleton } from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { VirtualizedGrid } from "@/components/ui/virtualized";
 
 // Reuse the Product interface from product-grid.tsx
 interface Product {
@@ -71,47 +72,19 @@ function VirtualizedProductGridComponent({
 }: VirtualizedProductGridProps) {
   // For performance monitoring in development
   const renderCount = process.env.NODE_ENV === 'development' ? useRenderCount('VirtualizedProductGrid') : 0;
-  
-  // State to track how many items to show
-  const [itemsToShow, setItemsToShow] = useState(initialItemsToShow);
-  
-  // Ref for the load more trigger element
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  
-  // Track when the load more trigger is visible
-  const { isVisible } = useIntersectionObserver({
-    root: null,
-    rootMargin: '200px', // Load more before user reaches the end
-    threshold: 0.1,
-  });
-  
-  // Load more items when the trigger becomes visible
-  useEffect(() => {
-    if (isVisible && hasMore && !isLoading && products.length > 0 && itemsToShow < products.length) {
-      setItemsToShow(prev => Math.min(prev + itemsPerBatch, products.length));
-      
-      // Call the onLoadMore callback if provided and we've shown all current products
-      if (onLoadMore && itemsToShow >= products.length - itemsPerBatch) {
-        onLoadMore();
-      }
-    }
-  }, [isVisible, hasMore, isLoading, products.length, itemsToShow, itemsPerBatch, onLoadMore]);
-  
-  // Handle manual load more button click
+
+  // Handle load more
   const handleLoadMore = useCallback(() => {
-    setItemsToShow(prev => Math.min(prev + itemsPerBatch, products.length));
-    
-    // Call the onLoadMore callback if provided and we've shown all current products
-    if (onLoadMore && itemsToShow >= products.length - itemsPerBatch) {
+    if (onLoadMore) {
       onLoadMore();
     }
-  }, [itemsPerBatch, products.length, itemsToShow, onLoadMore]);
-  
+  }, [onLoadMore]);
+
   // Show skeleton loader while loading initial data
   if (isLoading && products.length === 0) {
     return <ProductGridSkeleton count={initialItemsToShow} viewMode={viewMode} />;
   }
-  
+
   // Show empty state if no products
   if (!products || products.length === 0) {
     return (
@@ -120,11 +93,11 @@ function VirtualizedProductGridComponent({
       </div>
     );
   }
-  
+
   // Memoize the grid columns class based on columnCount
   const gridColumnsClass = useMemo(() => {
     if (viewMode === "list") return "grid-cols-1";
-    
+
     switch (columnCount) {
       case 2:
         return "grid-cols-1 sm:grid-cols-2";
@@ -137,15 +110,10 @@ function VirtualizedProductGridComponent({
         return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
     }
   }, [columnCount, viewMode]);
-  
-  // Get the visible products
-  const visibleProducts = useMemo(() => {
-    return products.slice(0, itemsToShow);
-  }, [products, itemsToShow]);
-  
-  // Memoize the product cards to prevent unnecessary re-renders
-  const productCards = useMemo(() => {
-    return visibleProducts.map((product) => (
+
+  // Render function for each product
+  const renderProduct = useCallback((product: Product, index: number) => {
+    return (
       <ProductCard
         key={product.id}
         id={product.id}
@@ -182,31 +150,44 @@ function VirtualizedProductGridComponent({
           onAddToCart ? () => onAddToCart(product.id) : undefined
         }
       />
-    ));
-  }, [visibleProducts, onAddToCart]);
+    );
+  }, [onAddToCart]);
+
+  // Empty placeholder
+  const emptyPlaceholder = (
+    <div className="flex h-40 w-full items-center justify-center rounded-md border border-dashed">
+      <p className="text-muted-foreground">{emptyMessage}</p>
+    </div>
+  );
+
+  // Loading placeholder
+  const loadingPlaceholder = (
+    <ProductGridSkeleton count={Math.min(itemsPerBatch, columnCount)} viewMode={viewMode} />
+  );
 
   return (
-    <div className="space-y-6">
-      <div
-        className={cn(
-          "grid gap-6",
-          gridColumnsClass,
-          className
-        )}
-        data-testid="virtualized-product-grid"
-        data-cy="virtualized-product-grid"
-      >
-        {productCards}
-      </div>
-      
-      {/* Load more trigger for intersection observer */}
-      {(hasMore || itemsToShow < products.length) && (
-        <div ref={loadMoreRef} className="w-full py-4 flex justify-center">
+    <div className="space-y-6" data-testid="virtualized-product-grid" data-cy="virtualized-product-grid">
+      <VirtualizedGrid
+        items={products}
+        renderItem={renderProduct}
+        columnCount={viewMode === "list" ? 1 : columnCount}
+        rowHeight={viewMode === "list" ? 150 : 350}
+        className={cn("gap-6", className)}
+        containerClassName="min-h-[500px]"
+        emptyPlaceholder={emptyPlaceholder}
+        loadingPlaceholder={isLoading ? loadingPlaceholder : undefined}
+        onEndReached={hasMore ? handleLoadMore : undefined}
+        testId="product-grid"
+      />
+
+      {/* Manual load more button for better UX */}
+      {hasMore && (
+        <div className="w-full py-4 flex justify-center">
           {isLoading ? (
             <ProductGridSkeleton count={Math.min(itemsPerBatch, columnCount)} viewMode={viewMode} />
           ) : (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={handleLoadMore}
               className="flex items-center gap-2"
               data-testid="load-more-button"
@@ -228,25 +209,25 @@ function VirtualizedProductGridComponent({
 function arePropsEqual(prevProps: VirtualizedProductGridProps, nextProps: VirtualizedProductGridProps): boolean {
   // Always re-render if loading state changes
   if (prevProps.isLoading !== nextProps.isLoading) return false;
-  
+
   // Compare view mode and column count
-  if (prevProps.viewMode !== nextProps.viewMode || 
+  if (prevProps.viewMode !== nextProps.viewMode ||
       prevProps.columnCount !== nextProps.columnCount) {
     return false;
   }
-  
+
   // Compare hasMore flag
   if (prevProps.hasMore !== nextProps.hasMore) return false;
-  
+
   // Compare products array length
   if (!prevProps.products || !nextProps.products) return false;
   if (prevProps.products.length !== nextProps.products.length) return false;
-  
+
   // Compare product IDs (if IDs are the same and in the same order, we assume the products are the same)
   // This is a performance optimization to avoid deep comparison of all product properties
   const prevIds = prevProps.products.map(p => p.id);
   const nextIds = nextProps.products.map(p => p.id);
-  
+
   return prevIds.every((id, index) => id === nextIds[index]);
 }
 

@@ -32,31 +32,31 @@ export function useDebounce<T extends (...args: any[]) => any>(
   } = {}
 ) {
   const { leading = false, trailing = true, maxWait } = options;
-  
+
   // Use refs to persist values without causing re-renders
   const fnRef = useRef(fn);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastCallTimeRef = useRef<number | null>(null);
   const lastArgsRef = useRef<Parameters<T> | null>(null);
-  
+
   // Update the function ref when the function changes
   fnRef.current = fn;
-  
+
   return useCallback(
     (...args: Parameters<T>) => {
       const now = Date.now();
       const isInvoking = leading && lastCallTimeRef.current === null;
-      
+
       // Store the last call time and arguments
       lastCallTimeRef.current = now;
       lastArgsRef.current = args;
-      
+
       // Function to execute the callback
       const execute = () => {
         if (!lastArgsRef.current) return;
         fnRef.current(...lastArgsRef.current);
       };
-      
+
       // Function to clear the timeout
       const clear = () => {
         if (timeoutRef.current) {
@@ -64,15 +64,15 @@ export function useDebounce<T extends (...args: any[]) => any>(
           timeoutRef.current = null;
         }
       };
-      
+
       // Clear the existing timeout
       clear();
-      
+
       // If leading and this is the first call, execute immediately
       if (isInvoking) {
         execute();
       }
-      
+
       // Set a new timeout for trailing execution
       if (trailing) {
         timeoutRef.current = setTimeout(() => {
@@ -81,7 +81,7 @@ export function useDebounce<T extends (...args: any[]) => any>(
           execute();
         }, wait);
       }
-      
+
       // If maxWait is specified and we've exceeded it, execute immediately
       if (maxWait !== undefined && lastCallTimeRef.current && now - lastCallTimeRef.current >= maxWait) {
         clear();
@@ -118,38 +118,38 @@ export function useThrottle<T extends (...args: any[]) => any>(
   } = {}
 ) {
   const { leading = true, trailing = true } = options;
-  
+
   // Use refs to persist values without causing re-renders
   const fnRef = useRef(fn);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastCallTimeRef = useRef<number | null>(null);
   const lastArgsRef = useRef<Parameters<T> | null>(null);
-  
+
   // Update the function ref when the function changes
   fnRef.current = fn;
-  
+
   return useCallback(
     (...args: Parameters<T>) => {
       const now = Date.now();
       const remaining = lastCallTimeRef.current ? wait - (now - lastCallTimeRef.current) : 0;
       const isInvoking = leading && lastCallTimeRef.current === null;
-      
+
       // Store the arguments
       lastArgsRef.current = args;
-      
+
       // Function to execute the callback
       const execute = () => {
         if (!lastArgsRef.current) return;
         fnRef.current(...lastArgsRef.current);
       };
-      
+
       // If this is the first call or we've waited long enough, execute
       if (isInvoking || remaining <= 0) {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
           timeoutRef.current = null;
         }
-        
+
         lastCallTimeRef.current = now;
         execute();
       } else if (trailing && !timeoutRef.current) {
@@ -236,4 +236,137 @@ export function useStopPropagation<T extends React.SyntheticEvent>(
     event.stopPropagation();
     fn(event);
   }, deps);
+}
+
+/**
+ * Creates a memoized version of an event handler that both prevents default
+ * and stops propagation.
+ *
+ * @param fn - The event handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized event handler that prevents default and stops propagation
+ *
+ * @example
+ * ```tsx
+ * const handleClick = usePreventDefaultAndStopPropagation((e) => {
+ *   // Click logic here
+ * }, [id]);
+ * ```
+ */
+export function usePreventDefaultAndStopPropagation<T extends React.SyntheticEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return useCallback((event: T) => {
+    event.preventDefault();
+    event.stopPropagation();
+    fn(event);
+  }, deps);
+}
+
+/**
+ * Creates a memoized version of a form submission handler.
+ *
+ * @param fn - The form submission handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized form submission handler
+ *
+ * @example
+ * ```tsx
+ * const handleSubmit = useFormSubmit((e) => {
+ *   // Form submission logic here
+ * }, [formData]);
+ * ```
+ */
+export function useFormSubmit<T extends React.FormEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return usePreventDefault(fn, deps);
+}
+
+/**
+ * Creates a memoized version of a click event handler.
+ *
+ * @param fn - The click event handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized click event handler
+ *
+ * @example
+ * ```tsx
+ * const handleClick = useClickHandler((e) => {
+ *   // Click logic here
+ * }, [id]);
+ * ```
+ */
+export function useClickHandler<T extends React.MouseEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return useCallback(fn, deps);
+}
+
+/**
+ * Creates a memoized version of a change event handler.
+ *
+ * @param fn - The change event handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized change event handler
+ *
+ * @example
+ * ```tsx
+ * const handleChange = useChangeHandler((e) => {
+ *   setValue(e.target.value);
+ * }, [setValue]);
+ * ```
+ */
+export function useChangeHandler<T extends React.ChangeEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return useCallback(fn, deps);
+}
+
+/**
+ * Creates a memoized version of a keyboard event handler.
+ *
+ * @param fn - The keyboard event handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized keyboard event handler
+ *
+ * @example
+ * ```tsx
+ * const handleKeyDown = useKeyboardHandler((e) => {
+ *   if (e.key === 'Enter') {
+ *     // Handle Enter key
+ *   }
+ * }, []);
+ * ```
+ */
+export function useKeyboardHandler<T extends React.KeyboardEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return useCallback(fn, deps);
+}
+
+/**
+ * Creates a memoized version of a focus event handler.
+ *
+ * @param fn - The focus event handler function
+ * @param deps - Dependencies that should trigger a new handler
+ * @returns A memoized focus event handler
+ *
+ * @example
+ * ```tsx
+ * const handleFocus = useFocusHandler((e) => {
+ *   // Focus logic here
+ * }, []);
+ * ```
+ */
+export function useFocusHandler<T extends React.FocusEvent>(
+  fn: (event: T) => void,
+  deps: React.DependencyList = []
+) {
+  return useCallback(fn, deps);
 }
