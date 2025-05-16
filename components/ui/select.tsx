@@ -2,34 +2,79 @@
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import { AlertCircle, Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Select = SelectPrimitive.Root
+interface SelectRootProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> {
+  error?: string
+  helperText?: string
+}
+
+// Create a context to pass error state to the trigger
+interface SelectContextType {
+  error?: string
+}
+
+const SelectContext = React.createContext<SelectContextType | undefined>(undefined)
+
+const Select = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Root>,
+  SelectRootProps
+>(({ error, helperText, ...props }, ref) => {
+  return (
+    <SelectContext.Provider value={{ error }}>
+      <div>
+        <SelectPrimitive.Root {...props} />
+        {error && (
+          <div className="flex items-center mt-1 text-destructive text-sm">
+            <AlertCircle className="h-4 w-4 mr-1" data-testid="alert-icon" />
+            <span>{error}</span>
+          </div>
+        )}
+        {!error && helperText && (
+          <div className="mt-1 text-muted-foreground text-sm">
+            {helperText}
+          </div>
+        )}
+      </div>
+    </SelectContext.Provider>
+  )
+})
+Select.displayName = "Select"
 
 const SelectGroup = SelectPrimitive.Group
 
 const SelectValue = SelectPrimitive.Value
 
+interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  error?: string
+}
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 opacity-50" />
-    </SelectPrimitive.Icon>
-  </SelectPrimitive.Trigger>
-))
+  SelectTriggerProps
+>(({ className, children, error, ...props }, ref) => {
+  // Get the error state from the parent Select component
+  const parentError = React.useContext(SelectContext)?.error
+
+  return (
+    <SelectPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        (error || parentError) && "border-destructive",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <SelectPrimitive.Icon asChild>
+        <ChevronDown className="h-4 w-4 opacity-50" data-testid="chevron-down-icon" />
+      </SelectPrimitive.Icon>
+    </SelectPrimitive.Trigger>
+  )
+})
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectScrollUpButton = React.forwardRef<
@@ -125,7 +170,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Check className="h-4 w-4" data-testid="check-icon" />
       </SelectPrimitive.ItemIndicator>
     </span>
 
@@ -145,6 +190,8 @@ const SelectSeparator = React.forwardRef<
   />
 ))
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+
+
 
 export {
   Select,
