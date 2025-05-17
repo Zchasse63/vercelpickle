@@ -103,7 +103,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
           {isLoading && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" data-testid="loader-icon" />
             </div>
           )}
 
@@ -115,7 +115,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
           {!isLoading && showError && !rightIcon && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="h-4 w-4" data-testid="alert-icon" />
             </div>
           )}
         </div>
