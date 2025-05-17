@@ -1,9 +1,5 @@
-import { PickupScheduling } from "@/components/seller/pickup-scheduling"
+import ClientPage from "./client-page";
 
 export default function PickupSchedulingPage() {
-  return (
-    <div className="space-y-6">
-      <PickupScheduling />
-    </div>
-  )
+  return <ClientPage />;
 }

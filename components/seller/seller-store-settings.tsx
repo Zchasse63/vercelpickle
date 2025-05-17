@@ -11,17 +11,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import { usePreventDefault, useEventCallback } from "@/lib/utils/event-handlers"
 
 export function SellerStoreSettings() {
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const handleUpdateStore = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // Use optimized event handler with usePreventDefault
+  const handleUpdateStore = usePreventDefault(async () => {
     setIsUpdating(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsUpdating(false)
-  }
+  }, [])
+
+  // Example of using useEventCallback for a button click handler
+  const handleLogoChange = useEventCallback(() => {
+    // Logic for changing the logo
+    console.log('Changing logo...');
+  }, [])
 
   return (
     <form onSubmit={handleUpdateStore}>
@@ -36,7 +43,7 @@ export function SellerStoreSettings() {
               <Store className="h-10 w-10 text-muted-foreground" />
             </div>
             <div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleLogoChange}>
                 Change Logo
               </Button>
               <p className="mt-1 text-xs text-muted-foreground">JPG, GIF or PNG. 1MB max.</p>

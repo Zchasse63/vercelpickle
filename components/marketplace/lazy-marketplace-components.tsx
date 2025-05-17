@@ -1,12 +1,50 @@
 "use client"
 
-import { Suspense } from "react"
-import { lazyImport } from "@/lib/lazy-import"
+import { Suspense, useEffect } from "react"
+import { lazyImport, preloadComponent } from "@/lib/lazy-import"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductGridSkeleton } from "@/components/ui/loading"
+import { ProductQuickViewSkeleton } from "./product-quick-view-skeleton"
+import { ProductCardSkeleton } from "./product-card-skeleton"
+import { ProductQuickViewModalProps } from "@/types/product"
 
-// Lazy loaded marketplace components
-export const LazyMarketplaceProductComparison = lazyImport(
+/**
+ * Lazy-loaded marketplace components with proper error handling and loading states
+ */
+
+// Product Quick View Modal
+export const ProductQuickViewModal = lazyImport(
+  () => import("@/components/marketplace/product-quick-view-modal"),
+  "ProductQuickViewModal",
+  {
+    ssr: false,
+    loading: ({ open, onOpenChange }: ProductQuickViewModalProps) => (
+      <ProductQuickViewSkeleton open={open} onOpenChange={onOpenChange} />
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load product details
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading product details"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    ),
+    onError: (error) => {
+      console.error("Error loading ProductQuickViewModal:", error)
+    }
+  }
+)
+
+// Product Comparison
+export const MarketplaceProductComparison = lazyImport(
   () => import("@/components/marketplace/marketplace-product-comparison"),
   "MarketplaceProductComparison",
   {
@@ -21,11 +59,28 @@ export const LazyMarketplaceProductComparison = lazyImport(
           <Skeleton className="h-[400px] w-full" />
         </div>
       </div>
+    ),
+    errorComponent: (error, retry) => (
+      <div className="p-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+          Failed to load product comparison
+        </h3>
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error.message || "An unexpected error occurred while loading the comparison tool"}
+        </p>
+        <button
+          onClick={retry}
+          className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
     )
   }
 )
 
-export const LazyMarketplaceProductReviews = lazyImport(
+// Product Reviews
+export const MarketplaceProductReviews = lazyImport(
   () => import("@/components/marketplace/marketplace-product-reviews"),
   "MarketplaceProductReviews",
   {
@@ -49,7 +104,8 @@ export const LazyMarketplaceProductReviews = lazyImport(
   }
 )
 
-export const LazyMarketplaceRelatedProducts = lazyImport(
+// Related Products
+export const MarketplaceRelatedProducts = lazyImport(
   () => import("@/components/marketplace/marketplace-related-products"),
   "MarketplaceRelatedProducts",
   {
@@ -63,18 +119,37 @@ export const LazyMarketplaceRelatedProducts = lazyImport(
   }
 )
 
-export const LazyMarketplaceAdvancedFilters = lazyImport(
+// Advanced Filters
+export const MarketplaceAdvancedFilters = lazyImport(
   () => import("@/components/marketplace/marketplace-advanced-filters"),
   "MarketplaceAdvancedFilters",
   {
     ssr: false,
     loading: () => (
-      <Skeleton className="h-10 w-32" />
+      <div className="w-full p-4 space-y-4 border rounded-lg">
+        <div className="flex justify-between items-center">
+          <div className="animate-pulse bg-muted h-6 w-32 rounded-md"></div>
+          <div className="animate-pulse bg-muted h-6 w-24 rounded-md"></div>
+        </div>
+        <div className="space-y-3">
+          {Array(5).fill(0).map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="animate-pulse bg-muted h-5 w-24 rounded-md"></div>
+              <div className="animate-pulse bg-muted h-8 w-full rounded-md"></div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-end gap-2 pt-2">
+          <div className="animate-pulse bg-muted h-9 w-24 rounded-md"></div>
+          <div className="animate-pulse bg-muted h-9 w-24 rounded-md"></div>
+        </div>
+      </div>
     )
   }
 )
 
-export const LazyMarketplaceProductSorting = lazyImport(
+// Product Sorting
+export const MarketplaceProductSorting = lazyImport(
   () => import("@/components/marketplace/marketplace-product-sorting"),
   "MarketplaceProductSorting",
   {
@@ -85,7 +160,8 @@ export const LazyMarketplaceProductSorting = lazyImport(
   }
 )
 
-export const LazyVirtualizedProductGrid = lazyImport(
+// Virtualized Product Grid
+export const VirtualizedProductGrid = lazyImport(
   () => import("@/components/marketplace/virtualized-product-grid"),
   "VirtualizedProductGrid",
   {
@@ -96,51 +172,40 @@ export const LazyVirtualizedProductGrid = lazyImport(
   }
 )
 
-// Wrapper components with Suspense
-export function MarketplaceProductComparisonLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[500px] w-full" />}>
-      <LazyMarketplaceProductComparison {...props} />
-    </Suspense>
-  )
+/**
+ * Preload functions for marketplace components
+ * These can be called before the components are needed to improve perceived performance
+ */
+export function preloadProductQuickViewModal() {
+  preloadComponent(() => import("@/components/marketplace/product-quick-view-modal"), "ProductQuickViewModal")
 }
 
-export function MarketplaceProductReviewsLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-      <LazyMarketplaceProductReviews {...props} />
-    </Suspense>
-  )
+export function preloadProductComparisonTool() {
+  preloadComponent(() => import("@/components/marketplace/marketplace-product-comparison"), "MarketplaceProductComparison")
 }
 
-export function MarketplaceRelatedProductsLazy(props: any) {
-  return (
-    <Suspense fallback={<ProductGridSkeleton count={4} viewMode="grid" />}>
-      <LazyMarketplaceRelatedProducts {...props} />
-    </Suspense>
-  )
+export function preloadAdvancedFilters() {
+  preloadComponent(() => import("@/components/marketplace/marketplace-advanced-filters"), "MarketplaceAdvancedFilters")
 }
 
-export function MarketplaceAdvancedFiltersLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-10 w-32" />}>
-      <LazyMarketplaceAdvancedFilters {...props} />
-    </Suspense>
-  )
-}
+/**
+ * Wrapper component that preloads the quick view modal when hovered
+ * This improves perceived performance when users interact with product cards
+ */
+export function usePreloadOnHover(productId: string) {
+  useEffect(() => {
+    const productCard = document.querySelector(`[data-product-id="${productId}"]`)
 
-export function MarketplaceProductSortingLazy(props: any) {
-  return (
-    <Suspense fallback={<Skeleton className="h-10 w-48" />}>
-      <LazyMarketplaceProductSorting {...props} />
-    </Suspense>
-  )
-}
+    if (productCard) {
+      const handleMouseEnter = () => {
+        preloadProductQuickViewModal()
+      }
 
-export function VirtualizedProductGridLazy(props: any) {
-  return (
-    <Suspense fallback={<ProductGridSkeleton count={12} viewMode="grid" />}>
-      <LazyVirtualizedProductGrid {...props} />
-    </Suspense>
-  )
+      productCard.addEventListener('mouseenter', handleMouseEnter)
+
+      return () => {
+        productCard.removeEventListener('mouseenter', handleMouseEnter)
+      }
+    }
+  }, [productId])
 }

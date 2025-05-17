@@ -3,6 +3,14 @@
  *
  * This module provides hooks and utilities for interacting with product data in Convex.
  * It implements consistent patterns for data fetching, error handling, and state management.
+ *
+ * Features:
+ * - Hooks for fetching products with various filters and pagination
+ * - Hooks for creating, updating, and deleting products
+ * - Optimistic updates for better user experience
+ * - Server-side data fetching for SSR and SSG
+ * - Caching with automatic invalidation
+ * - Error handling with retry capability
  */
 
 import { api } from "@/convex/_generated/api";
@@ -14,34 +22,18 @@ import {
   usePaginatedQuery,
   useBatchQuery,
   PaginationParams,
-  invalidateQueries
+  invalidateQueries,
+  fetchFromServer,
+  prefetchQuery
 } from "./index";
 import { useMemo } from "react";
+import { Product as ProductType } from "@/types/product";
 
 /**
  * Product data structure
+ * Re-export the Product type from types/product.ts
  */
-export interface Product {
-  id: Id<"products">;
-  name: string;
-  description: string;
-  price: number;
-  sellerId: Id<"users">;
-  sellerName?: string;
-  category: string;
-  subcategory?: string;
-  images: string[];
-  inventory: number;
-  unit: string;
-  minimumOrder?: number;
-  status?: string;
-  tags?: string[];
-  specifications?: Record<string, any>;
-  isOrganic?: boolean;
-  isLocal?: boolean;
-  createdAt: number;
-  updatedAt: number;
-}
+export type Product = ProductType;
 
 /**
  * Product filter parameters
@@ -267,11 +259,11 @@ export interface ProductCreationData {
 }
 
 /**
- * Hook for creating a product
+ * Hook for creating a product with optimistic updates
  */
 export function useCreateProduct() {
   const mutation = useMutation(api.products.create, {
-    onSuccess: () => {
+    onSuccess: (productId) => {
       toast({
         title: "Product created",
         description: "Your product has been created successfully.",
@@ -280,12 +272,44 @@ export function useCreateProduct() {
       // Invalidate product queries to refresh the data
       invalidateQueries("products.getAll");
       invalidateQueries("products.getFeatured");
+
+      if (productId) {
+        // Prefetch the new product to ensure it's in the cache
+        prefetchQuery("products.getById", { id: productId });
+      }
     },
     retry: true,
     retryCount: 3,
     invalidateQueries: [
       "products.getAll",
       "products.getFeatured"
+    ],
+    optimisticUpdate: [
+      {
+        // Optimistically update the products list
+        queryKey: "products.getAll",
+        updateFn: (currentData, args) => {
+          if (!currentData || !currentData.items) return currentData;
+
+          // Create a temporary ID for the optimistic product
+          const tempId = `temp_${Date.now()}` as any;
+
+          // Create an optimistic product
+          const optimisticProduct: Product = {
+            id: tempId,
+            ...args,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            status: args.status || "active",
+          };
+
+          // Add the optimistic product to the list
+          return {
+            ...currentData,
+            items: [optimisticProduct, ...currentData.items],
+          };
+        }
+      }
     ]
   });
 
@@ -321,7 +345,7 @@ export interface ProductUpdateData {
 }
 
 /**
- * Hook for updating a product
+ * Hook for updating a product with optimistic updates
  */
 export function useUpdateProduct() {
   const mutation = useMutation(api.products.update, {
@@ -338,6 +362,41 @@ export function useUpdateProduct() {
     },
     retry: true,
     retryCount: 3,
+    optimisticUpdate: [
+      {
+        // Optimistically update the specific product
+        queryKey: (args) => `products.getById:${JSON.stringify({ id: args.id })}`,
+        updateFn: (currentData, args) => {
+          if (!currentData) return currentData;
+
+          // Create an optimistically updated product
+          return {
+            ...currentData,
+            ...args,
+            updatedAt: Date.now(),
+          };
+        }
+      },
+      {
+        // Optimistically update the products list
+        queryKey: "products.getAll",
+        updateFn: (currentData, args) => {
+          if (!currentData || !currentData.items) return currentData;
+
+          // Find and update the product in the list
+          const updatedItems = currentData.items.map(item =>
+            item.id === args.id
+              ? { ...item, ...args, updatedAt: Date.now() }
+              : item
+          );
+
+          return {
+            ...currentData,
+            items: updatedItems,
+          };
+        }
+      }
+    ]
   });
 
   return {
@@ -351,7 +410,7 @@ export function useUpdateProduct() {
 }
 
 /**
- * Hook for deleting a product
+ * Hook for deleting a product with optimistic updates
  */
 export function useDeleteProduct() {
   const mutation = useMutation(api.products.remove, {
@@ -370,6 +429,38 @@ export function useDeleteProduct() {
     invalidateQueries: [
       "products.getAll",
       "products.getFeatured"
+    ],
+    optimisticUpdate: [
+      {
+        // Optimistically update the products list
+        queryKey: "products.getAll",
+        updateFn: (currentData, args) => {
+          if (!currentData || !currentData.items) return currentData;
+
+          // Remove the product from the list
+          const updatedItems = currentData.items.filter(item => item.id !== args.id);
+
+          return {
+            ...currentData,
+            items: updatedItems,
+          };
+        }
+      },
+      {
+        // Optimistically update the featured products list
+        queryKey: "products.getFeatured",
+        updateFn: (currentData, args) => {
+          if (!currentData || !currentData.items) return currentData;
+
+          // Remove the product from the list
+          const updatedItems = currentData.items.filter(item => item.id !== args.id);
+
+          return {
+            ...currentData,
+            items: updatedItems,
+          };
+        }
+      }
     ]
   });
 
@@ -402,4 +493,64 @@ export function useSearchProducts(query: string | null | undefined) {
  */
 export function useFilteredProducts(filters: ProductFilterParams) {
   return useProducts(filters);
+}
+
+/**
+ * Server-side functions for fetching products
+ * These can be used in Server Components or in getServerSideProps
+ */
+
+/**
+ * Fetch a product by ID on the server side
+ */
+export async function getProductById(productId: Id<"products">) {
+  return await fetchFromServer("products.getById", { id: productId });
+}
+
+/**
+ * Fetch all products on the server side with pagination and filtering
+ */
+export async function getAllProducts(filters?: ProductFilterParams) {
+  const defaultFilters: ProductFilterParams = {
+    limit: 20,
+    sortBy: "createdAt",
+    sortDirection: "desc",
+  };
+
+  const mergedFilters = { ...defaultFilters, ...filters };
+  return await fetchFromServer("products.getAll", mergedFilters);
+}
+
+/**
+ * Fetch featured products on the server side
+ */
+export async function getFeaturedProducts(options?: {
+  limit?: number;
+  category?: string;
+}) {
+  const args = {
+    limit: options?.limit || 8,
+    category: options?.category,
+  };
+
+  return await fetchFromServer("products.getFeatured", args);
+}
+
+/**
+ * Fetch products by category on the server side
+ */
+export async function getProductsByCategory(
+  category: string,
+  options?: {
+    limit?: number;
+    sortDirection?: "asc" | "desc";
+  }
+) {
+  const args = {
+    category,
+    limit: options?.limit || 20,
+    sortDirection: options?.sortDirection || "desc",
+  };
+
+  return await fetchFromServer("products.getByCategory", args);
 }

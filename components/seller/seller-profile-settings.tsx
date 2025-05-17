@@ -10,17 +10,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { usePreventDefault } from "@/lib/utils/event-handlers"
 
 export function SellerProfileSettings() {
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // Use optimized event handler with usePreventDefault
+  const handleUpdateProfile = usePreventDefault(async (e: React.FormEvent) => {
     setIsUpdating(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsUpdating(false)
-  }
+  }, []) // Empty dependency array since this doesn't depend on any props or state
 
   return (
     <form onSubmit={handleUpdateProfile}>

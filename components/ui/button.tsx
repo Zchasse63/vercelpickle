@@ -134,7 +134,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const wrappedChildren = asChild ? (
       <span className="flex items-center">
         {isLoading && (
-          <Loader2 className={cn(iconClasses, "animate-spin")} aria-hidden="true" />
+          <Loader2 className={cn(iconClasses, "animate-spin")} aria-hidden="true" data-testid="loader-icon" />
         )}
         {!isLoading && leftIcon && (
           <span className={iconClasses} aria-hidden="true">{leftIcon}</span>
@@ -147,7 +147,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ) : (
       <>
         {isLoading && (
-          <Loader2 className={cn(iconClasses, "animate-spin")} aria-hidden="true" />
+          <Loader2 className={cn(iconClasses, "animate-spin")} aria-hidden="true" data-testid="loader-icon" />
         )}
         {!isLoading && leftIcon && (
           <span className={iconClasses} aria-hidden="true">{leftIcon}</span>

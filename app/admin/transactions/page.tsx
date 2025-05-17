@@ -1,4 +1,4 @@
-import { AdminTransactionHistoryLazy } from "@/components/admin/lazy-admin-components"
+import { AdminTransactionHistory } from "@/components/admin/lazy-admin-components"
 
 export default function AdminTransactionsPage() {
   return (
@@ -9,7 +9,7 @@ export default function AdminTransactionsPage() {
       </div>
 
       <div className="space-y-4 animate-fade-up delay-100">
-        <AdminTransactionHistoryLazy />
+        <AdminTransactionHistory />
       </div>
     </div>
   )

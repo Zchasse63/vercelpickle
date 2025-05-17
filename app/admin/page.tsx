@@ -1,14 +1,40 @@
+"use client"
+
+import { useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AdminOverviewStats } from "@/components/admin/admin-overview-stats"
 import { AdminRecentOrders } from "@/components/admin/admin-recent-orders"
-import { AdminRevenueChart } from "@/components/admin/admin-revenue-chart"
 import { AdminTopSellers } from "@/components/admin/admin-top-sellers"
 import { AdminTopProducts } from "@/components/admin/admin-top-products"
 import { AdminDashboardMetrics } from "@/components/admin/admin-dashboard-metrics"
 import { AdminRecentActivity } from "@/components/admin/admin-recent-activity"
 
+// Import lazy-loaded components
+import {
+  AdminFinancialDashboard,
+  AdminSalesChart,
+  AdminGeographyChart,
+  AdminTransactionHistory,
+  preloadAdminFinancialDashboard,
+  preloadAdminSalesChart,
+  preloadAdminGeographyChart
+} from "@/components/admin/lazy-admin-components"
+
 export default function AdminDashboardPage() {
+  // Preload components when the dashboard page loads
+  // This improves perceived performance when switching tabs
+  useEffect(() => {
+    // Start preloading these components after the main content is rendered
+    const timer = setTimeout(() => {
+      preloadAdminFinancialDashboard()
+      preloadAdminSalesChart()
+      preloadAdminGeographyChart()
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <main className="flex flex-col gap-4" data-testid="admin-dashboard">
       <div className="animate-fade-up" data-testid="admin-header">
@@ -74,31 +100,11 @@ export default function AdminDashboardPage() {
         </TabsContent>
 
         <TabsContent value="financial" className="space-y-4 animate-fade-up">
-          <Card className="hover-lift">
-            <CardHeader>
-              <CardTitle>Financial Dashboard</CardTitle>
-              <CardDescription>Financial overview and metrics</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Financial dashboard will be displayed here</p>
-              </div>
-            </CardContent>
-          </Card>
+          <AdminFinancialDashboard />
         </TabsContent>
 
         <TabsContent value="transactions" className="space-y-4 animate-fade-up">
-          <Card className="hover-lift">
-            <CardHeader>
-              <CardTitle>Transaction History</CardTitle>
-              <CardDescription>View and manage all transactions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Transaction history will be displayed here</p>
-              </div>
-            </CardContent>
-          </Card>
+          <AdminTransactionHistory />
         </TabsContent>
 
         <TabsContent value="invoices" className="space-y-4 animate-fade-up">
@@ -116,17 +122,10 @@ export default function AdminDashboardPage() {
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-4 animate-fade-up">
-          <Card className="hover-lift">
-            <CardHeader>
-              <CardTitle>Advanced Analytics</CardTitle>
-              <CardDescription>Detailed platform performance metrics</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Advanced analytics charts will be displayed here</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-2 animate-fade-up">
+            <AdminSalesChart />
+            <AdminGeographyChart />
+          </div>
         </TabsContent>
 
         <TabsContent value="reports" className="space-y-4 animate-fade-up">

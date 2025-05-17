@@ -59,7 +59,12 @@
     "convex:deploy": "convex deploy",
     "convex:seed": "node ./scripts/seed-convex.js",
     "update:timestamps": "./scripts/update-timestamps.sh",
-    "checkpoint": "./scripts/create-checkpoint.sh"
+    "checkpoint": "./scripts/create-checkpoint.sh",
+    "refactor:status": "node scripts/update-refactoring-status.js",
+    "refactor:dashboard": "node scripts/update-dashboard.js",
+    "refactor:view": "open dashboard/index.html",
+    "refactor:update": "npm run refactor:status && npm run refactor:dashboard",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "latest",
