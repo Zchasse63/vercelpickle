@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Skeleton } from "./skeleton";
-import { 
-  skeletonSizes, 
-  skeletonShapes, 
-  skeletonMargins, 
+import {
+  skeletonSizes,
+  skeletonShapes,
+  skeletonMargins,
   skeletonClass,
   skeletonArray
 } from "@/lib/styles/skeleton-styles";
@@ -40,10 +40,10 @@ export function TextSkeleton({
       {skeletonArray(lines).map((item) => (
         <Skeleton
           key={item.id}
-          className={skeletonClass({ 
-            height: size, 
-            width: index => index === lines - 1 ? "sm" : "md", 
-            className 
+          className={skeletonClass({
+            height: size,
+            width: index => index === lines - 1 ? "sm" : "md",
+            className
           })}
           {...props}
         />
@@ -86,19 +86,19 @@ export function HeadingSkeleton({
   return (
     <div className="space-y-2">
       <Skeleton
-        className={skeletonClass({ 
-          height: sizes[level], 
-          width: widths[level], 
-          className 
+        className={skeletonClass({
+          height: sizes[level],
+          width: widths[level],
+          className
         })}
         {...props}
       />
       {withSubheading && (
         <Skeleton
-          className={skeletonClass({ 
-            height: "sm", 
-            width: widths[level + 1 > 6 ? 6 : level + 1], 
-            className: "mt-1" 
+          className={skeletonClass({
+            height: "sm",
+            width: widths[level + 1 > 6 ? 6 : level + 1],
+            className: "mt-1"
           })}
         />
       )}
@@ -196,7 +196,7 @@ export function CardSkeleton({
           )}
         </div>
       )}
-      
+
       {content && (
         <div className="space-y-2">
           {skeletonArray(contentLines).map((item) => (
@@ -207,7 +207,7 @@ export function CardSkeleton({
           ))}
         </div>
       )}
-      
+
       {footer && (
         <div className="flex justify-end space-x-2 pt-2">
           <ButtonSkeleton size="sm" />
@@ -216,6 +216,67 @@ export function CardSkeleton({
       )}
     </div>
   );
+}
+
+/**
+ * SkeletonCard component for card placeholders (test-compatible version)
+ */
+export interface SkeletonCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  hasImage?: boolean
+  hasFooter?: boolean
+  imageHeight?: string
+}
+
+export function SkeletonCard({
+  className,
+  hasImage = true,
+  hasFooter = false,
+  imageHeight = "h-40",
+  ...props
+}: SkeletonCardProps) {
+  return (
+    <div
+      className={cn(
+        "rounded-lg border p-4 space-y-4",
+        className
+      )}
+      data-testid="skeleton-card"
+      {...props}
+    >
+      {hasImage && (
+        <SkeletonImage
+          height={imageHeight}
+          data-testid="skeleton-card-image"
+        />
+      )}
+
+      <div className="space-y-2">
+        <SkeletonText
+          width="w-3/4"
+          height="h-5"
+          data-testid="skeleton-card-title"
+        />
+        <SkeletonText
+          width="w-full"
+          data-testid="skeleton-card-description-1"
+        />
+        <SkeletonText
+          width="w-full"
+          data-testid="skeleton-card-description-2"
+        />
+      </div>
+
+      {hasFooter && (
+        <div
+          className="flex items-center justify-between pt-2"
+          data-testid="skeleton-card-footer"
+        >
+          <SkeletonText width="w-24" />
+          <SkeletonButton width="w-16" size="sm" />
+        </div>
+      )}
+    </div>
+  )
 }
 
 /**
@@ -243,7 +304,7 @@ export function TableSkeleton({
           ))}
         </div>
       </div>
-      
+
       <div className="divide-y">
         {skeletonArray(rows).map((row) => (
           <div key={row.id} className="p-4">
@@ -279,11 +340,132 @@ export function ChartSkeleton({
     lg: "h-64",
     xl: "h-96",
   };
-  
+
   return (
     <Skeleton
       className={cn(heights[height], "w-full rounded-md", className)}
       {...props}
     />
   );
+}
+
+/**
+ * SkeletonText component for text placeholders (test-compatible version)
+ */
+export interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
+  width?: string
+  height?: string
+}
+
+export function SkeletonText({
+  className,
+  width = "w-full",
+  height = "h-4",
+  ...props
+}: SkeletonTextProps) {
+  return (
+    <Skeleton
+      className={cn(height, width, className)}
+      {...props}
+    />
+  )
+}
+
+/**
+ * SkeletonAvatar component for avatar placeholders (test-compatible version)
+ */
+export interface SkeletonAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+  size?: "sm" | "md" | "lg" | "xl"
+}
+
+export function SkeletonAvatar({
+  className,
+  size = "md",
+  ...props
+}: SkeletonAvatarProps) {
+  const sizeClasses = {
+    sm: "h-8 w-8",
+    md: "h-10 w-10",
+    lg: "h-12 w-12",
+    xl: "h-16 w-16",
+  }
+
+  return (
+    <Skeleton
+      className={cn(
+        sizeClasses[size],
+        "rounded-full",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+/**
+ * SkeletonButton component for button placeholders (test-compatible version)
+ */
+export interface SkeletonButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+  size?: "sm" | "md" | "lg"
+  width?: string
+}
+
+export function SkeletonButton({
+  className,
+  size = "md",
+  width = "w-20",
+  ...props
+}: SkeletonButtonProps) {
+  const sizeClasses = {
+    sm: "h-9",
+    md: "h-10",
+    lg: "h-11",
+  }
+
+  return (
+    <Skeleton
+      className={cn(
+        sizeClasses[size],
+        width,
+        "rounded-md",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+/**
+ * SkeletonImage component for image placeholders (test-compatible version)
+ */
+export interface SkeletonImageProps extends React.HTMLAttributes<HTMLDivElement> {
+  aspectRatio?: "video" | "square" | "portrait" | "landscape"
+  height?: string
+}
+
+export function SkeletonImage({
+  className,
+  aspectRatio,
+  height = "h-40",
+  ...props
+}: SkeletonImageProps) {
+  const aspectRatioClasses = {
+    video: "aspect-video",
+    square: "aspect-square",
+    portrait: "aspect-[3/4]",
+    landscape: "aspect-[4/3]",
+  }
+
+  return (
+    <Skeleton
+      className={cn(
+        height,
+        "w-full",
+        aspectRatio && aspectRatioClasses[aspectRatio],
+        "rounded-md",
+        className
+      )}
+      {...props}
+    />
+  )
 }

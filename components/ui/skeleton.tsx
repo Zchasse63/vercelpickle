@@ -41,6 +41,7 @@ function Skeleton({
         animationClasses[animation],
         className
       )}
+      role="status"
       {...props}
     />
   )
