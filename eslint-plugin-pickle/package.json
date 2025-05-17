@@ -1,0 +1,19 @@
+{
+  "name": "eslint-plugin-pickle",
+  "version": "1.0.0",
+  "description": "ESLint plugin for Pickle B2B Marketplace",
+  "main": "index.js",
+  "author": "Pickle B2B Marketplace Team",
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "pickle",
+    "b2b",
+    "marketplace"
+  ],
+  "peerDependencies": {
+    "eslint": ">=7.0.0"
+  }
+}
